@@ -1,0 +1,28 @@
+# 認証情報（絶対にコミットしない）
+.env
+.env.*
+!.env.example
+
+# 依存関係
+node_modules/
+
+# ビルド成果物
+dist/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# ログ
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# エディタ
+.vscode/
+.idea/
