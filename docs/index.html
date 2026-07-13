@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>図書館ダッシュボード</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f5f6f8;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --accent: #2563eb;
+      --warn: #b45309;
+      --danger: #dc2626;
+      --soon: #ca8a04;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111827;
+        --card: #1f2937;
+        --text: #f9fafb;
+        --muted: #9ca3af;
+        --border: #374151;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    header {
+      margin-bottom: 16px;
+    }
+    h1 {
+      margin: 0 0 4px;
+      font-size: 1.5rem;
+    }
+    .updated {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 1.1rem;
+    }
+    .count {
+      color: var(--muted);
+      font-weight: normal;
+    }
+    .item-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .item {
+      padding: 12px 0;
+      border-top: 1px solid var(--border);
+    }
+    .item:first-child { border-top: none; padding-top: 0; }
+    .item.duplicate { border-left: 3px solid var(--warn); padding-left: 10px; }
+    .item-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .item-meta, .item-detail {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .deadline-today { color: var(--danger); font-weight: 600; }
+    .deadline-soon { color: var(--soon); font-weight: 600; }
+    .empty {
+      margin: 0;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📚 図書館ダッシュボード</h1>
+      <div class="updated">最終更新: 2026/07/13 17:05</div>
+    </header>
+    
+    <section class="panel" id="duplicates">
+      <h2>⚠️ 重複予約 <span class="count">(1)</span></h2>
+      <ul class="item-list">
+    <li class="item duplicate">
+      <div class="item-title">のびーる国語無敵の語彙力</div>
+      <div class="item-meta">新宿区（家族） + 中野区（本人）</div>
+    </li></ul>
+    </section>
+    
+    <section class="panel" id="hold-ready">
+      <h2>🔴 受け取り待ち <span class="count">(3)</span></h2>
+      <ul class="item-list">
+    <li class="item">
+      <div class="item-title">コンサル時代に教わった仕事ができる上司の当たり前</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail ">受取館: 千早臨時窓口 / 取置期限: 2026/07/20</div>
+    </li>
+    <li class="item">
+      <div class="item-title">年収300万円から年配当804万円をもらう「激・増配株」投資入門</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail ">受取館: 中野東 / 取置期限: 2026/07/17</div>
+    </li>
+    <li class="item">
+      <div class="item-title">のびーる国語究極の作文力</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail ">受取館: 中野東 / 取置期限: 2026/07/19</div>
+    </li></ul>
+    </section>
+    
+    <section class="panel" id="loans">
+      <h2>📖 返却予定 <span class="count">(13)</span></h2>
+      <ul class="item-list">
+    <li class="item">
+      <div class="item-title">休養の「正解」－疲労博士がたどり着いた－</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail ">返却期限: 2026/07/25 / 貸出館: 千早臨時窓口</div>
+    </li>
+    <li class="item">
+      <div class="item-title">Google NotebookLM即効活用大全－情報整理とコミュニケーションを加速させる－</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail ">返却期限: 2026/07/25 / 貸出館: 千早臨時窓口</div>
+    </li>
+    <li class="item">
+      <div class="item-title">週刊ダイヤモンド 2026.6/20　2026.06.20　114巻　18号　通巻5089号</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail ">返却期限: 2026/07/25 / 貸出館: 千早臨時窓口</div>
+    </li>
+    <li class="item">
+      <div class="item-title">有元葉子魚を食べよう</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail ">返却期限: 2026/07/24</div>
+    </li>
+    <li class="item">
+      <div class="item-title">スマホNO!</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail ">返却期限: 2026/07/24</div>
+    </li>
+    <li class="item">
+      <div class="item-title">どっちが強い!?ピットブルvsオオヤマネコ</div>
+      <div class="item-meta">新宿区 / 家族</div>
+      <div class="item-detail ">返却期限: 2026/07/25</div>
+    </li>
+    <li class="item">
+      <div class="item-title">かいけつゾロリきょうふのちょうとっきゅう</div>
+      <div class="item-meta">新宿区 / 家族</div>
+      <div class="item-detail ">返却期限: 2026/07/25</div>
+    </li>
+    <li class="item">
+      <div class="item-title">どっちが強い!?リカオンvsモリイノシシ</div>
+      <div class="item-meta">新宿区 / 家族</div>
+      <div class="item-detail ">返却期限: 2026/07/25</div>
+    </li>
+    <li class="item">
+      <div class="item-title">誰が勇者を殺したか</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail ">返却期限: 2026/07/21 / 貸出館: 中野東</div>
+    </li>
+    <li class="item">
+      <div class="item-title">この不平等な世界で、僕たちがスタートラインに立つために</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail ">返却期限: 2026/07/21 / 貸出館: 中野東</div>
+    </li>
+    <li class="item">
+      <div class="item-title">サブカルをお守りにして生きてきた</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail ">返却期限: 2026/07/21 / 貸出館: 中野東</div>
+    </li>
+    <li class="item">
+      <div class="item-title">哲学を「人生の軸」にする本</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail ">返却期限: 2026/07/21 / 貸出館: 中野東</div>
+    </li>
+    <li class="item">
+      <div class="item-title">二月の勝者 18</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail ">返却期限: 2026/07/21 / 貸出館: 中野東</div>
+    </li></ul>
+    </section>
+    
+    <section class="panel" id="reservations">
+      <h2>🟡 予約中 <span class="count">(44)</span></h2>
+      <ul class="item-list">
+    <li class="item">
+      <div class="item-title">AIのド素人ですが、10年後も仕事とお金に困らない方法を教えて下さい!－最悪の未来でも自分だけが助かる本－</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 10番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">体力おばけへの道－頭も体も疲れにくくなるスゴイ運動－</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 32番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">イランとアメリカ、そしてイスラエル－「ガザ以後」の中東－(朝日新書　1050)</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 1番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">すごいジャーナリング－うまくいっている人は紙に何を書いているのか?－</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 1番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">オルカン思考－世界経済を味方につける「長期投資」の教科書－</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 2番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">ありふれた家を建てる</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 3番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">中学受験に挑戦したら、想像以上に壮絶でした</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 6番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">元SAPIXママ中受伴走1095日－コミックエッセイ－</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 32番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">ギャグ漫画家の母が初めて中受伴走をしてみたら</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 4番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">戦国日本VSヨーロッパ－グローバルヒストリーで読み解く信長・秀吉・家康の対外戦略－(集英社新書　1311)</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 1番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">お手伝いで自分から楽しく学べる子になる戦略的ほったらかし教育</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 4番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">プアジャパン－インフレ世界を生き抜く資本戦略－</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 14番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">疲れ切った人のための勉強法</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 5番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">ストーリーでわかる「起業の科学」－超入門－</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 1番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">さよならの言い方なんて知らない。－THEME OF THE WATER&amp;BISCUIT－[1](新潮文庫nex　こ-60</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 2番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">なぜ賃金は上がらないのか－日本経済30年の陥穽－(講談社現代新書　2817)</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 6番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">777(角川文庫　い59-4)</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 6番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">「早生まれ」は損なのか－生まれ月格差の経済学－(中公新書ラクレ　867)</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 4番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">本とは何か(新潮新書　1128)</div>
+      <div class="item-meta">豊島区 / 本人</div>
+      <div class="item-detail">予約順位: 7番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">あなたの一生を支える世界最高峰の「学び」</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail">予約順位: 2番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">話が長いエンジニア、答えを急ぐ営業</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail">予約順位: 4番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">脱スマホ術</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail">予約順位: 1番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">人生が自動的にうまくいくレッスン</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail">予約順位: 2番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">会社四季報プロ500 2026年春号 第117号</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail">予約順位: 2番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">AIで終わる人AIで化ける人</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail">予約順位: 2番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">科学的根拠で子育て</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail">予約順位: 33番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">ダイコンコン</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail">予約順位: 1番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">どっちが強い!?荒ぶる巨大鳥バトル</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail">予約順位: 3番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">成功した人だけが知っている儲かるスモールビジネス</div>
+      <div class="item-meta">新宿区 / 本人</div>
+      <div class="item-detail">予約順位: 1番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">どっちが強い!?大乱闘 忍者vsカウボーイ</div>
+      <div class="item-meta">新宿区 / 家族</div>
+      <div class="item-detail">予約順位: 14番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">のびーる国語無敵の語彙力</div>
+      <div class="item-meta">新宿区 / 家族</div>
+      <div class="item-detail">予約順位: 31番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">二月の勝者 19</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 1番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">二月の勝者 20</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 1番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">二月の勝者 21</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 15番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">THE WEALTH LADDER富の階段</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 4番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">2034</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 21番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">北極星</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 4番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">東大教授がおしえる超!やばい日本史</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 4番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">億までの人億からの人</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 54番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">「教える」を手放す</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 2番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">のびーる国語無敵の語彙力</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 9番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">村井さんちのお取り寄せ</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 3番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">世界のエリートが学んでいる教養としての超現代史</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 10番目</div>
+    </li>
+    <li class="item">
+      <div class="item-title">人生のモヤモヤから解放される!「やりたいこと」の地図</div>
+      <div class="item-meta">中野区 / 本人</div>
+      <div class="item-detail">予約順位: 3番目</div>
+    </li></ul>
+    </section>
+  </div>
+</body>
+</html>
