@@ -27,9 +27,11 @@ function formatDateTime(iso: string): string {
   });
 }
 
-function formatDate(value?: string): string {
+function formatMonthDay(value?: string): string {
   if (!value) return "";
-  return value.replace(/-/g, "/");
+  const match = value.replace(/\//g, "-").match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (!match) return value;
+  return `${Number(match[2])}/${Number(match[3])}`;
 }
 
 function daysUntil(value?: string): number | null {
@@ -53,15 +55,13 @@ function deadlineClass(value?: string): string {
 
 function renderMeta(item: LibraryItem): string {
   const library = LIBRARY_LABELS[item.library];
-  return `${escapeHtml(library)} / ${escapeHtml(item.user)}`;
+  return `${escapeHtml(library)}/${escapeHtml(item.user)}`;
 }
 
-function renderItem(item: LibraryItem, extra: string): string {
+function renderItem(item: LibraryItem, trailing = ""): string {
   return `
     <li class="item">
-      <div class="item-title">${escapeHtml(item.title)}</div>
-      <div class="item-meta">${renderMeta(item)}</div>
-      ${extra}
+      <div class="item-title">${escapeHtml(item.title)} <span class="item-meta">${renderMeta(item)}</span>${trailing}</div>
     </li>`;
 }
 
@@ -145,7 +145,7 @@ export async function buildDashboard(data: DashboardData): Promise<void> {
 
   const duplicateSection = renderSection(
     "duplicates",
-    "⚠️ 重複予約",
+    "重複予約",
     data.duplicates,
     (group) => renderDuplicateGroup(group as LibraryItem[]),
     true,
@@ -153,16 +153,16 @@ export async function buildDashboard(data: DashboardData): Promise<void> {
 
   const holdSection = renderSection(
     "hold-ready",
-    "🔴 受け取り待ち",
+    "受取",
     holdReady,
     (item) => {
       const hold = item as LibraryItem;
-      const deadline = formatDate(hold.pickupDeadline);
+      const deadline = formatMonthDay(hold.pickupDeadline);
       const cls = deadlineClass(hold.pickupDeadline);
-      return renderItem(
-        hold,
-        `<div class="item-detail ${cls}">受取館: ${escapeHtml(hold.pickupLibrary ?? "—")} / 取置期限: ${escapeHtml(deadline || "—")}</div>`,
-      );
+      const trailing = deadline
+        ? ` <span class="item-detail ${cls}">${escapeHtml(deadline)}</span>`
+        : "";
+      return renderItem(hold, trailing);
     },
     false,
     renderCountBreakdown(holdReady),
@@ -170,33 +170,18 @@ export async function buildDashboard(data: DashboardData): Promise<void> {
 
   const loanSection = renderSection(
     "loans",
-    "📖 返却予定",
+    "返却",
     loans,
-    (item) => {
-      const loan = item as LibraryItem;
-      const deadline = formatDate(loan.returnDeadline);
-      const cls = deadlineClass(loan.returnDeadline);
-      return renderItem(
-        loan,
-        `<div class="item-detail ${cls}">返却期限: ${escapeHtml(deadline || "—")}${loan.loanLibrary ? ` / 貸出館: ${escapeHtml(loan.loanLibrary)}` : ""}</div>`,
-      );
-    },
+    (item) => renderItem(item as LibraryItem),
     false,
     renderCountBreakdown(loans),
   );
 
   const reservationSection = renderSection(
     "reservations",
-    "🟡 予約中",
+    "予約中",
     reservations,
-    (item) => {
-      const reservation = item as LibraryItem;
-      const queue =
-        reservation.queuePosition !== undefined
-          ? `予約順位: ${reservation.queuePosition}番目`
-          : `状態: ${escapeHtml(reservation.status)}`;
-      return renderItem(reservation, `<div class="item-detail">${queue}</div>`);
-    },
+    (item) => renderItem(item as LibraryItem),
     false,
     renderReservationBreakdown(data.items),
   );
@@ -232,7 +217,7 @@ export async function buildDashboard(data: DashboardData): Promise<void> {
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic Pro", sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
@@ -290,10 +275,10 @@ export async function buildDashboard(data: DashboardData): Promise<void> {
     .item.duplicate { border-left: 3px solid var(--warn); padding-left: 10px; }
     .item-title {
       font-weight: 600;
-      margin-bottom: 4px;
     }
     .item-meta, .item-detail {
       color: var(--muted);
+      font-weight: normal;
       font-size: 0.9rem;
     }
     .deadline-today { color: var(--danger); font-weight: 600; }
@@ -307,7 +292,7 @@ export async function buildDashboard(data: DashboardData): Promise<void> {
 <body>
   <div class="container">
     <header>
-      <h1>📚 図書館ダッシュボード</h1>
+      <h1>図書館ダッシュボード</h1>
       <div class="updated">最終更新: ${escapeHtml(formatDateTime(data.fetchedAt))}</div>
     </header>
     ${duplicateSection}

@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-13T09:38:08.914Z",
+  "fetchedAt": "2026-07-14T06:55:52.910Z",
   "items": [
     {
       "library": "toshima",
@@ -9,7 +9,7 @@
       "returnDeadline": "2026/07/25",
       "loanLibrary": "千早臨時窓口",
       "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -19,7 +19,7 @@
       "returnDeadline": "2026/07/25",
       "loanLibrary": "千早臨時窓口",
       "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -29,7 +29,7 @@
       "returnDeadline": "2026/07/25",
       "loanLibrary": "千早臨時窓口",
       "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -39,7 +39,7 @@
       "pickupLibrary": "千早臨時窓口",
       "pickupDeadline": "2026/07/20",
       "status": "用意できています",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -49,7 +49,7 @@
       "queuePosition": 10,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -59,7 +59,7 @@
       "queuePosition": 32,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -69,7 +69,7 @@
       "queuePosition": 1,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -79,7 +79,7 @@
       "queuePosition": 1,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -89,7 +89,7 @@
       "queuePosition": 2,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -99,7 +99,7 @@
       "queuePosition": 3,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -109,7 +109,7 @@
       "queuePosition": 6,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -119,7 +119,7 @@
       "queuePosition": 32,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -129,7 +129,7 @@
       "queuePosition": 4,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -139,7 +139,7 @@
       "queuePosition": 1,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -149,17 +149,17 @@
       "queuePosition": 4,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "プアジャパン－インフレ世界を生き抜く資本戦略－",
-      "queuePosition": 14,
+      "queuePosition": 13,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -169,7 +169,7 @@
       "queuePosition": 5,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -179,7 +179,7 @@
       "queuePosition": 1,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -189,7 +189,7 @@
       "queuePosition": 2,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -199,7 +199,7 @@
       "queuePosition": 6,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -209,7 +209,7 @@
       "queuePosition": 6,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -219,7 +219,7 @@
       "queuePosition": 4,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "toshima",
@@ -229,7 +229,7 @@
       "queuePosition": 7,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-13T09:37:25.696Z"
+      "fetchedAt": "2026-07-14T06:55:07.432Z"
     },
     {
       "library": "shinjuku",
@@ -238,7 +238,7 @@
       "title": "有元葉子魚を食べよう",
       "returnDeadline": "2026/07/24",
       "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
     },
     {
       "library": "shinjuku",
@@ -247,7 +247,16 @@
       "title": "スマホNO!",
       "returnDeadline": "2026/07/24",
       "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
+    },
+    {
+      "library": "shinjuku",
+      "user": "本人",
+      "category": "hold_ready",
+      "title": "ダイコンコン",
+      "pickupLibrary": "西落合",
+      "status": "確保済",
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
     },
     {
       "library": "shinjuku",
@@ -257,7 +266,7 @@
       "queuePosition": 2,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
     },
     {
       "library": "shinjuku",
@@ -267,7 +276,7 @@
       "queuePosition": 4,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
     },
     {
       "library": "shinjuku",
@@ -277,7 +286,7 @@
       "queuePosition": 1,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
     },
     {
       "library": "shinjuku",
@@ -287,7 +296,7 @@
       "queuePosition": 2,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
     },
     {
       "library": "shinjuku",
@@ -297,7 +306,7 @@
       "queuePosition": 2,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
     },
     {
       "library": "shinjuku",
@@ -307,7 +316,7 @@
       "queuePosition": 2,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
     },
     {
       "library": "shinjuku",
@@ -317,17 +326,7 @@
       "queuePosition": 33,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
-    },
-    {
-      "library": "shinjuku",
-      "user": "本人",
-      "category": "reservation",
-      "title": "ダイコンコン",
-      "queuePosition": 1,
-      "pickupLibrary": "西落合",
-      "status": "予約中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
     },
     {
       "library": "shinjuku",
@@ -337,7 +336,7 @@
       "queuePosition": 3,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
     },
     {
       "library": "shinjuku",
@@ -347,7 +346,7 @@
       "queuePosition": 1,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:37:57.769Z"
+      "fetchedAt": "2026-07-14T06:55:42.037Z"
     },
     {
       "library": "shinjuku",
@@ -356,7 +355,7 @@
       "title": "どっちが強い!?ピットブルvsオオヤマネコ",
       "returnDeadline": "2026/07/25",
       "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:38:03.828Z"
+      "fetchedAt": "2026-07-14T06:55:48.708Z"
     },
     {
       "library": "shinjuku",
@@ -365,7 +364,7 @@
       "title": "かいけつゾロリきょうふのちょうとっきゅう",
       "returnDeadline": "2026/07/25",
       "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:38:03.828Z"
+      "fetchedAt": "2026-07-14T06:55:48.708Z"
     },
     {
       "library": "shinjuku",
@@ -374,7 +373,7 @@
       "title": "どっちが強い!?リカオンvsモリイノシシ",
       "returnDeadline": "2026/07/25",
       "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:38:03.828Z"
+      "fetchedAt": "2026-07-14T06:55:48.708Z"
     },
     {
       "library": "shinjuku",
@@ -384,77 +383,27 @@
       "queuePosition": 14,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:03.828Z"
+      "fetchedAt": "2026-07-14T06:55:48.708Z"
     },
     {
       "library": "nakano",
       "user": "本人",
       "category": "loan",
-      "title": "誰が勇者を殺したか",
-      "returnDeadline": "2026/07/21",
-      "loanLibrary": "中野東",
-      "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "loan",
-      "title": "この不平等な世界で、僕たちがスタートラインに立つために",
-      "returnDeadline": "2026/07/21",
-      "loanLibrary": "中野東",
-      "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "loan",
-      "title": "サブカルをお守りにして生きてきた",
-      "returnDeadline": "2026/07/21",
-      "loanLibrary": "中野東",
-      "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "loan",
-      "title": "哲学を「人生の軸」にする本",
-      "returnDeadline": "2026/07/21",
-      "loanLibrary": "中野東",
-      "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "loan",
-      "title": "二月の勝者 18",
-      "returnDeadline": "2026/07/21",
-      "loanLibrary": "中野東",
-      "status": "貸出中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "hold_ready",
       "title": "年収300万円から年配当804万円をもらう「激・増配株」投資入門",
-      "pickupLibrary": "中野東",
-      "pickupDeadline": "2026/07/17",
-      "status": "取置済",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "returnDeadline": "2026/07/28",
+      "loanLibrary": "中野東",
+      "status": "貸出中",
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
       "user": "本人",
-      "category": "hold_ready",
+      "category": "loan",
       "title": "のびーる国語究極の作文力",
-      "pickupLibrary": "中野東",
-      "pickupDeadline": "2026/07/19",
-      "status": "取置済",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "returnDeadline": "2026/07/28",
+      "loanLibrary": "中野東",
+      "status": "貸出中",
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -464,7 +413,7 @@
       "queuePosition": 1,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -474,7 +423,7 @@
       "queuePosition": 1,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -484,7 +433,7 @@
       "queuePosition": 15,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -494,7 +443,7 @@
       "queuePosition": 4,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -504,17 +453,17 @@
       "queuePosition": 21,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
       "user": "本人",
       "category": "reservation",
       "title": "北極星",
-      "queuePosition": 4,
+      "queuePosition": 3,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -524,7 +473,7 @@
       "queuePosition": 4,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -534,7 +483,7 @@
       "queuePosition": 54,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -544,7 +493,7 @@
       "queuePosition": 2,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -554,7 +503,7 @@
       "queuePosition": 9,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -564,7 +513,7 @@
       "queuePosition": 3,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -574,7 +523,7 @@
       "queuePosition": 10,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     },
     {
       "library": "nakano",
@@ -584,7 +533,7 @@
       "queuePosition": 3,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-13T09:38:08.914Z"
+      "fetchedAt": "2026-07-14T06:55:52.910Z"
     }
   ],
   "duplicates": []
