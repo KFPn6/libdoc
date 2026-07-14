@@ -83,6 +83,7 @@ function renderSection(
   items: LibraryItem[] | LibraryItem[][],
   render: (item: LibraryItem | LibraryItem[]) => string,
   hiddenWhenEmpty = false,
+  breakdown = "",
 ): string {
   const count = Array.isArray(items[0])
     ? (items as LibraryItem[][]).length
@@ -95,11 +96,44 @@ function renderSection(
       ? `<p class="empty">なし</p>`
       : `<ul class="item-list">${(items as Array<LibraryItem | LibraryItem[]>).map(render).join("")}</ul>`;
 
+  const breakdownHtml = breakdown
+    ? ` <span class="breakdown">${breakdown}</span>`
+    : "";
+
   return `
     <section class="panel" id="${id}">
-      <h2>${title} <span class="count">(${count})</span></h2>
+      <h2>${title} <span class="count">(${count})</span>${breakdownHtml}</h2>
       ${body}
     </section>`;
+}
+
+const LIBRARY_ORDER: LibraryItem["library"][] = ["toshima", "shinjuku", "nakano"];
+
+const RESERVATION_LIMITS: Record<LibraryItem["library"], number> = {
+  toshima: 20,
+  shinjuku: 10,
+  nakano: 15,
+};
+
+function renderCountBreakdown(items: LibraryItem[]): string {
+  return LIBRARY_ORDER.map((library) => {
+    const count = items.filter((item) => item.library === library).length;
+    return `${LIBRARY_LABELS[library]}(${count})`;
+  }).join("、");
+}
+
+function renderReservationBreakdown(items: LibraryItem[]): string {
+  return LIBRARY_ORDER.map((library) => {
+    const used = items.filter(
+      (item) =>
+        item.library === library &&
+        item.user === "本人" &&
+        (item.category === "reservation" || item.category === "hold_ready"),
+    ).length;
+    const limit = RESERVATION_LIMITS[library];
+    const full = used >= limit ? " reservation-full" : "";
+    return `<span class="lib-stat${full}">${LIBRARY_LABELS[library]}(${used}/${limit})</span>`;
+  }).join("、");
 }
 
 export async function buildDashboard(data: DashboardData): Promise<void> {
@@ -117,34 +151,55 @@ export async function buildDashboard(data: DashboardData): Promise<void> {
     true,
   );
 
-  const holdSection = renderSection("hold-ready", "🔴 受け取り待ち", holdReady, (item) => {
-    const hold = item as LibraryItem;
-    const deadline = formatDate(hold.pickupDeadline);
-    const cls = deadlineClass(hold.pickupDeadline);
-    return renderItem(
-      hold,
-      `<div class="item-detail ${cls}">受取館: ${escapeHtml(hold.pickupLibrary ?? "—")} / 取置期限: ${escapeHtml(deadline || "—")}</div>`,
-    );
-  });
+  const holdSection = renderSection(
+    "hold-ready",
+    "🔴 受け取り待ち",
+    holdReady,
+    (item) => {
+      const hold = item as LibraryItem;
+      const deadline = formatDate(hold.pickupDeadline);
+      const cls = deadlineClass(hold.pickupDeadline);
+      return renderItem(
+        hold,
+        `<div class="item-detail ${cls}">受取館: ${escapeHtml(hold.pickupLibrary ?? "—")} / 取置期限: ${escapeHtml(deadline || "—")}</div>`,
+      );
+    },
+    false,
+    renderCountBreakdown(holdReady),
+  );
 
-  const loanSection = renderSection("loans", "📖 返却予定", loans, (item) => {
-    const loan = item as LibraryItem;
-    const deadline = formatDate(loan.returnDeadline);
-    const cls = deadlineClass(loan.returnDeadline);
-    return renderItem(
-      loan,
-      `<div class="item-detail ${cls}">返却期限: ${escapeHtml(deadline || "—")}${loan.loanLibrary ? ` / 貸出館: ${escapeHtml(loan.loanLibrary)}` : ""}</div>`,
-    );
-  });
+  const loanSection = renderSection(
+    "loans",
+    "📖 返却予定",
+    loans,
+    (item) => {
+      const loan = item as LibraryItem;
+      const deadline = formatDate(loan.returnDeadline);
+      const cls = deadlineClass(loan.returnDeadline);
+      return renderItem(
+        loan,
+        `<div class="item-detail ${cls}">返却期限: ${escapeHtml(deadline || "—")}${loan.loanLibrary ? ` / 貸出館: ${escapeHtml(loan.loanLibrary)}` : ""}</div>`,
+      );
+    },
+    false,
+    renderCountBreakdown(loans),
+  );
 
-  const reservationSection = renderSection("reservations", "🟡 予約中", reservations, (item) => {
-    const reservation = item as LibraryItem;
-    const queue =
-      reservation.queuePosition !== undefined
-        ? `予約順位: ${reservation.queuePosition}番目`
-        : `状態: ${escapeHtml(reservation.status)}`;
-    return renderItem(reservation, `<div class="item-detail">${queue}</div>`);
-  });
+  const reservationSection = renderSection(
+    "reservations",
+    "🟡 予約中",
+    reservations,
+    (item) => {
+      const reservation = item as LibraryItem;
+      const queue =
+        reservation.queuePosition !== undefined
+          ? `予約順位: ${reservation.queuePosition}番目`
+          : `状態: ${escapeHtml(reservation.status)}`;
+      return renderItem(reservation, `<div class="item-detail">${queue}</div>`);
+    },
+    false,
+    renderReservationBreakdown(data.items),
+  );
 
   const html = `<!DOCTYPE html>
 <html lang="ja">
@@ -206,12 +261,21 @@ export async function buildDashboard(data: DashboardData): Promise<void> {
       margin-bottom: 12px;
     }
     .panel h2 {
-      margin: 0 0 12px;
+      margin: 0 0 8px;
       font-size: 1.1rem;
     }
     .count {
       color: var(--muted);
       font-weight: normal;
+    }
+    .breakdown {
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: normal;
+    }
+    .lib-stat.reservation-full {
+      color: var(--danger);
+      font-weight: 600;
     }
     .item-list {
       list-style: none;
