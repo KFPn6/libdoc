@@ -325,22 +325,38 @@ const INDEX_HTML = `<!DOCTYPE html>
         );
     }
 
+    let loading = null;
+
     async function loadDashboard() {
+      if (loading) return loading;
       const app = document.getElementById("app");
-      try {
-        const res = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json();
-        renderDashboard(data);
-      } catch (err) {
-        document.getElementById("updated").textContent = "読み込み失敗";
-        app.innerHTML =
-          '<p class="status error">データの取得に失敗しました。ページを再読み込みしてください。</p>';
-        console.error(err);
-      }
+      loading = (async () => {
+        try {
+          const res = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          const data = await res.json();
+          renderDashboard(data);
+        } catch (err) {
+          document.getElementById("updated").textContent = "読み込み失敗";
+          app.innerHTML =
+            '<p class="status error">データの取得に失敗しました。ページを再読み込みしてください。</p>';
+          console.error(err);
+        }
+      })().finally(() => {
+        loading = null;
+      });
+      return loading;
     }
 
     loadDashboard();
+
+    window.addEventListener("pageshow", (e) => {
+      if (e.persisted) loadDashboard();
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") loadDashboard();
+    });
   </script>
 </body>
 </html>
