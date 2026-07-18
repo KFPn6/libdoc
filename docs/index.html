@@ -102,192 +102,237 @@
       margin: 0;
       color: var(--muted);
     }
+    .status {
+      color: var(--muted);
+    }
+    .status.error {
+      color: var(--danger);
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>図書館ダッシュボード</h1>
-      <div class="updated">最終更新: 2026/07/14 15:55</div>
+      <div class="updated" id="updated">読み込み中...</div>
     </header>
-    
-    
-    <section class="panel" id="hold-ready">
-      <h2>受取 <span class="count">(2)</span> <span class="breakdown">豊島区(1)、新宿区(1)、中野区(0)</span></h2>
-      <ul class="item-list">
-    <li class="item">
-      <div class="item-title">コンサル時代に教わった仕事ができる上司の当たり前 <span class="item-meta">豊島区/本人</span> <span class="item-detail ">7/20</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">ダイコンコン <span class="item-meta">新宿区/本人</span></div>
-    </li></ul>
-    </section>
-    
-    <section class="panel" id="loans">
-      <h2>返却 <span class="count">(10)</span> <span class="breakdown">豊島区(3)、新宿区(5)、中野区(2)</span></h2>
-      <ul class="item-list">
-    <li class="item">
-      <div class="item-title">休養の「正解」－疲労博士がたどり着いた－ <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">Google NotebookLM即効活用大全－情報整理とコミュニケーションを加速させる－ <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">週刊ダイヤモンド 2026.6/20　2026.06.20　114巻　18号　通巻5089号 <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">有元葉子魚を食べよう <span class="item-meta">新宿区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">スマホNO! <span class="item-meta">新宿区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">どっちが強い!?ピットブルvsオオヤマネコ <span class="item-meta">新宿区/家族</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">かいけつゾロリきょうふのちょうとっきゅう <span class="item-meta">新宿区/家族</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">どっちが強い!?リカオンvsモリイノシシ <span class="item-meta">新宿区/家族</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">年収300万円から年配当804万円をもらう「激・増配株」投資入門 <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">のびーる国語究極の作文力 <span class="item-meta">中野区/本人</span></div>
-    </li></ul>
-    </section>
-    
-    <section class="panel" id="reservations">
-      <h2>予約中 <span class="count">(42)</span> <span class="breakdown"><span class="lib-stat reservation-full">豊島区(20/20)</span>、<span class="lib-stat reservation-full">新宿区(10/10)</span>、<span class="lib-stat">中野区(13/15)</span></span></h2>
-      <ul class="item-list">
-    <li class="item">
-      <div class="item-title">AIのド素人ですが、10年後も仕事とお金に困らない方法を教えて下さい!－最悪の未来でも自分だけが助かる本－ <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">体力おばけへの道－頭も体も疲れにくくなるスゴイ運動－ <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">イランとアメリカ、そしてイスラエル－「ガザ以後」の中東－(朝日新書　1050) <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">すごいジャーナリング－うまくいっている人は紙に何を書いているのか?－ <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">オルカン思考－世界経済を味方につける「長期投資」の教科書－ <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">ありふれた家を建てる <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">中学受験に挑戦したら、想像以上に壮絶でした <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">元SAPIXママ中受伴走1095日－コミックエッセイ－ <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">ギャグ漫画家の母が初めて中受伴走をしてみたら <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">戦国日本VSヨーロッパ－グローバルヒストリーで読み解く信長・秀吉・家康の対外戦略－(集英社新書　1311) <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">お手伝いで自分から楽しく学べる子になる戦略的ほったらかし教育 <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">プアジャパン－インフレ世界を生き抜く資本戦略－ <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">疲れ切った人のための勉強法 <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">ストーリーでわかる「起業の科学」－超入門－ <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">さよならの言い方なんて知らない。－THEME OF THE WATER&amp;BISCUIT－[1](新潮文庫nex　こ-60 <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">なぜ賃金は上がらないのか－日本経済30年の陥穽－(講談社現代新書　2817) <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">777(角川文庫　い59-4) <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">「早生まれ」は損なのか－生まれ月格差の経済学－(中公新書ラクレ　867) <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">本とは何か(新潮新書　1128) <span class="item-meta">豊島区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">あなたの一生を支える世界最高峰の「学び」 <span class="item-meta">新宿区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">話が長いエンジニア、答えを急ぐ営業 <span class="item-meta">新宿区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">脱スマホ術 <span class="item-meta">新宿区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">人生が自動的にうまくいくレッスン <span class="item-meta">新宿区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">会社四季報プロ500 2026年春号 第117号 <span class="item-meta">新宿区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">AIで終わる人AIで化ける人 <span class="item-meta">新宿区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">科学的根拠で子育て <span class="item-meta">新宿区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">どっちが強い!?荒ぶる巨大鳥バトル <span class="item-meta">新宿区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">成功した人だけが知っている儲かるスモールビジネス <span class="item-meta">新宿区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">どっちが強い!?大乱闘 忍者vsカウボーイ <span class="item-meta">新宿区/家族</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">二月の勝者 19 <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">二月の勝者 20 <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">二月の勝者 21 <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">THE WEALTH LADDER富の階段 <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">2034 <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">北極星 <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">東大教授がおしえる超!やばい日本史 <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">億までの人億からの人 <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">「教える」を手放す <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">のびーる国語無敵の語彙力 <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">村井さんちのお取り寄せ <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">世界のエリートが学んでいる教養としての超現代史 <span class="item-meta">中野区/本人</span></div>
-    </li>
-    <li class="item">
-      <div class="item-title">人生のモヤモヤから解放される!「やりたいこと」の地図 <span class="item-meta">中野区/本人</span></div>
-    </li></ul>
-    </section>
+    <div id="app">
+      <p class="status">データを読み込んでいます...</p>
+    </div>
   </div>
+  <script>
+    const LIBRARY_LABELS = {
+      toshima: "豊島区",
+      shinjuku: "新宿区",
+      nakano: "中野区",
+    };
+    const LIBRARY_ORDER = ["toshima", "shinjuku", "nakano"];
+    const RESERVATION_LIMITS = {
+      toshima: 20,
+      shinjuku: 10,
+      nakano: 15,
+    };
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function formatDateTime(iso) {
+      return new Date(iso).toLocaleString("ja-JP", {
+        timeZone: "Asia/Tokyo",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+
+    function formatMonthDay(value) {
+      if (!value) return "";
+      const match = value.replace(/\//g, "-").match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+      if (!match) return value;
+      return Number(match[2]) + "/" + Number(match[3]);
+    }
+
+    function daysUntil(value) {
+      if (!value) return null;
+      const target = new Date(value.replace(/\//g, "-"));
+      if (Number.isNaN(target.getTime())) return null;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      target.setHours(0, 0, 0, 0);
+      return Math.round((target.getTime() - today.getTime()) / 86400000);
+    }
+
+    function deadlineClass(value) {
+      const days = daysUntil(value);
+      if (days === null) return "";
+      if (days <= 0) return "deadline-today";
+      if (days <= 3) return "deadline-soon";
+      return "";
+    }
+
+    function itemsByCategory(items, category) {
+      return items.filter((item) => item.category === category);
+    }
+
+    function renderMeta(item) {
+      return escapeHtml(LIBRARY_LABELS[item.library]) + "/" + escapeHtml(item.user);
+    }
+
+    function renderItem(item, trailing) {
+      return (
+        '<li class="item">' +
+        '<div class="item-title">' +
+        escapeHtml(item.title) +
+        ' <span class="item-meta">' +
+        renderMeta(item) +
+        "</span>" +
+        (trailing || "") +
+        "</div></li>"
+      );
+    }
+
+    function renderDuplicateGroup(group) {
+      const title = group[0] ? group[0].title : "";
+      const locations = group
+        .map((item) => LIBRARY_LABELS[item.library] + "（" + item.user + "）")
+        .join(" + ");
+      return (
+        '<li class="item duplicate">' +
+        '<div class="item-title">' +
+        escapeHtml(title) +
+        "</div>" +
+        '<div class="item-meta">' +
+        escapeHtml(locations) +
+        "</div></li>"
+      );
+    }
+
+    function renderSection(id, title, items, render, hiddenWhenEmpty, breakdown) {
+      const count = items.length;
+      if (hiddenWhenEmpty && count === 0) return "";
+
+      const body =
+        count === 0
+          ? '<p class="empty">なし</p>'
+          : '<ul class="item-list">' + items.map(render).join("") + "</ul>";
+
+      const breakdownHtml = breakdown
+        ? ' <span class="breakdown">' + breakdown + "</span>"
+        : "";
+
+      return (
+        '<section class="panel" id="' +
+        id +
+        '">' +
+        "<h2>" +
+        title +
+        ' <span class="count">(' +
+        count +
+        ")</span>" +
+        breakdownHtml +
+        "</h2>" +
+        body +
+        "</section>"
+      );
+    }
+
+    function renderCountBreakdown(items) {
+      return LIBRARY_ORDER.map((library) => {
+        const count = items.filter((item) => item.library === library).length;
+        return LIBRARY_LABELS[library] + "(" + count + ")";
+      }).join("、");
+    }
+
+    function renderReservationBreakdown(items) {
+      return LIBRARY_ORDER.map((library) => {
+        const used = items.filter(
+          (item) =>
+            item.library === library &&
+            item.user === "本人" &&
+            (item.category === "reservation" || item.category === "hold_ready"),
+        ).length;
+        const limit = RESERVATION_LIMITS[library];
+        const full = used >= limit ? " reservation-full" : "";
+        return (
+          '<span class="lib-stat' +
+          full +
+          '">' +
+          LIBRARY_LABELS[library] +
+          "(" +
+          used +
+          "/" +
+          limit +
+          ")</span>"
+        );
+      }).join("、");
+    }
+
+    function renderDashboard(data) {
+      const holdReady = itemsByCategory(data.items, "hold_ready");
+      const loans = itemsByCategory(data.items, "loan");
+      const reservations = itemsByCategory(data.items, "reservation");
+
+      document.getElementById("updated").textContent =
+        "最終更新: " + formatDateTime(data.fetchedAt);
+
+      document.getElementById("app").innerHTML =
+        renderSection("duplicates", "重複予約", data.duplicates, renderDuplicateGroup, true) +
+        renderSection(
+          "hold-ready",
+          "受取",
+          holdReady,
+          (item) => {
+            const deadline = formatMonthDay(item.pickupDeadline);
+            const cls = deadlineClass(item.pickupDeadline);
+            const trailing = deadline
+              ? ' <span class="item-detail ' + cls + '">' + escapeHtml(deadline) + "</span>"
+              : "";
+            return renderItem(item, trailing);
+          },
+          false,
+          renderCountBreakdown(holdReady),
+        ) +
+        renderSection(
+          "loans",
+          "返却",
+          loans,
+          (item) => renderItem(item),
+          false,
+          renderCountBreakdown(loans),
+        ) +
+        renderSection(
+          "reservations",
+          "予約中",
+          reservations,
+          (item) => renderItem(item),
+          false,
+          renderReservationBreakdown(data.items),
+        );
+    }
+
+    async function loadDashboard() {
+      const app = document.getElementById("app");
+      try {
+        const res = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        renderDashboard(data);
+      } catch (err) {
+        document.getElementById("updated").textContent = "読み込み失敗";
+        app.innerHTML =
+          '<p class="status error">データの取得に失敗しました。ページを再読み込みしてください。</p>';
+        console.error(err);
+      }
+    }
+
+    loadDashboard();
+  </script>
 </body>
 </html>

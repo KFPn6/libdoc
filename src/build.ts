@@ -1,192 +1,12 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { itemsByCategory, LIBRARY_LABELS } from "./merge.js";
-import type { DashboardData, LibraryItem } from "./types.js";
+import type { DashboardData } from "./types.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DOCS_DIR = path.resolve(__dirname, "../docs");
 
-function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function formatDateTime(iso: string): string {
-  const date = new Date(iso);
-  return date.toLocaleString("ja-JP", {
-    timeZone: "Asia/Tokyo",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
-function formatMonthDay(value?: string): string {
-  if (!value) return "";
-  const match = value.replace(/\//g, "-").match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-  if (!match) return value;
-  return `${Number(match[2])}/${Number(match[3])}`;
-}
-
-function daysUntil(value?: string): number | null {
-  if (!value) return null;
-  const normalized = value.replace(/\//g, "-");
-  const target = new Date(normalized);
-  if (Number.isNaN(target.getTime())) return null;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  target.setHours(0, 0, 0, 0);
-  return Math.round((target.getTime() - today.getTime()) / 86_400_000);
-}
-
-function deadlineClass(value?: string): string {
-  const days = daysUntil(value);
-  if (days === null) return "";
-  if (days <= 0) return "deadline-today";
-  if (days <= 3) return "deadline-soon";
-  return "";
-}
-
-function renderMeta(item: LibraryItem): string {
-  const library = LIBRARY_LABELS[item.library];
-  return `${escapeHtml(library)}/${escapeHtml(item.user)}`;
-}
-
-function renderItem(item: LibraryItem, trailing = ""): string {
-  return `
-    <li class="item">
-      <div class="item-title">${escapeHtml(item.title)} <span class="item-meta">${renderMeta(item)}</span>${trailing}</div>
-    </li>`;
-}
-
-function renderDuplicateGroup(group: LibraryItem[]): string {
-  const title = group[0]?.title ?? "";
-  const locations = group
-    .map((item) => `${LIBRARY_LABELS[item.library]}（${item.user}）`)
-    .join(" + ");
-  return `
-    <li class="item duplicate">
-      <div class="item-title">${escapeHtml(title)}</div>
-      <div class="item-meta">${escapeHtml(locations)}</div>
-    </li>`;
-}
-
-function renderSection(
-  id: string,
-  title: string,
-  items: LibraryItem[] | LibraryItem[][],
-  render: (item: LibraryItem | LibraryItem[]) => string,
-  hiddenWhenEmpty = false,
-  breakdown = "",
-): string {
-  const count = Array.isArray(items[0])
-    ? (items as LibraryItem[][]).length
-    : (items as LibraryItem[]).length;
-
-  if (hiddenWhenEmpty && count === 0) return "";
-
-  const body =
-    count === 0
-      ? `<p class="empty">なし</p>`
-      : `<ul class="item-list">${(items as Array<LibraryItem | LibraryItem[]>).map(render).join("")}</ul>`;
-
-  const breakdownHtml = breakdown
-    ? ` <span class="breakdown">${breakdown}</span>`
-    : "";
-
-  return `
-    <section class="panel" id="${id}">
-      <h2>${title} <span class="count">(${count})</span>${breakdownHtml}</h2>
-      ${body}
-    </section>`;
-}
-
-const LIBRARY_ORDER: LibraryItem["library"][] = ["toshima", "shinjuku", "nakano"];
-
-const RESERVATION_LIMITS: Record<LibraryItem["library"], number> = {
-  toshima: 20,
-  shinjuku: 10,
-  nakano: 15,
-};
-
-function renderCountBreakdown(items: LibraryItem[]): string {
-  return LIBRARY_ORDER.map((library) => {
-    const count = items.filter((item) => item.library === library).length;
-    return `${LIBRARY_LABELS[library]}(${count})`;
-  }).join("、");
-}
-
-function renderReservationBreakdown(items: LibraryItem[]): string {
-  return LIBRARY_ORDER.map((library) => {
-    const used = items.filter(
-      (item) =>
-        item.library === library &&
-        item.user === "本人" &&
-        (item.category === "reservation" || item.category === "hold_ready"),
-    ).length;
-    const limit = RESERVATION_LIMITS[library];
-    const full = used >= limit ? " reservation-full" : "";
-    return `<span class="lib-stat${full}">${LIBRARY_LABELS[library]}(${used}/${limit})</span>`;
-  }).join("、");
-}
-
-export async function buildDashboard(data: DashboardData): Promise<void> {
-  await mkdir(DOCS_DIR, { recursive: true });
-
-  const holdReady = itemsByCategory(data.items, "hold_ready");
-  const loans = itemsByCategory(data.items, "loan");
-  const reservations = itemsByCategory(data.items, "reservation");
-
-  const duplicateSection = renderSection(
-    "duplicates",
-    "重複予約",
-    data.duplicates,
-    (group) => renderDuplicateGroup(group as LibraryItem[]),
-    true,
-  );
-
-  const holdSection = renderSection(
-    "hold-ready",
-    "受取",
-    holdReady,
-    (item) => {
-      const hold = item as LibraryItem;
-      const deadline = formatMonthDay(hold.pickupDeadline);
-      const cls = deadlineClass(hold.pickupDeadline);
-      const trailing = deadline
-        ? ` <span class="item-detail ${cls}">${escapeHtml(deadline)}</span>`
-        : "";
-      return renderItem(hold, trailing);
-    },
-    false,
-    renderCountBreakdown(holdReady),
-  );
-
-  const loanSection = renderSection(
-    "loans",
-    "返却",
-    loans,
-    (item) => renderItem(item as LibraryItem),
-    false,
-    renderCountBreakdown(loans),
-  );
-
-  const reservationSection = renderSection(
-    "reservations",
-    "予約中",
-    reservations,
-    (item) => renderItem(item as LibraryItem),
-    false,
-    renderReservationBreakdown(data.items),
-  );
-
-  const html = `<!DOCTYPE html>
+const INDEX_HTML = `<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -290,22 +110,244 @@ export async function buildDashboard(data: DashboardData): Promise<void> {
       margin: 0;
       color: var(--muted);
     }
+    .status {
+      color: var(--muted);
+    }
+    .status.error {
+      color: var(--danger);
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>図書館ダッシュボード</h1>
-      <div class="updated">最終更新: ${escapeHtml(formatDateTime(data.fetchedAt))}</div>
+      <div class="updated" id="updated">読み込み中...</div>
     </header>
-    ${duplicateSection}
-    ${holdSection}
-    ${loanSection}
-    ${reservationSection}
+    <div id="app">
+      <p class="status">データを読み込んでいます...</p>
+    </div>
   </div>
-</body>
-</html>`;
+  <script>
+    const LIBRARY_LABELS = {
+      toshima: "豊島区",
+      shinjuku: "新宿区",
+      nakano: "中野区",
+    };
+    const LIBRARY_ORDER = ["toshima", "shinjuku", "nakano"];
+    const RESERVATION_LIMITS = {
+      toshima: 20,
+      shinjuku: 10,
+      nakano: 15,
+    };
 
-  await writeFile(path.join(DOCS_DIR, "index.html"), html, "utf8");
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function formatDateTime(iso) {
+      return new Date(iso).toLocaleString("ja-JP", {
+        timeZone: "Asia/Tokyo",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+
+    function formatMonthDay(value) {
+      if (!value) return "";
+      const match = value.replace(/\\//g, "-").match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})/);
+      if (!match) return value;
+      return Number(match[2]) + "/" + Number(match[3]);
+    }
+
+    function daysUntil(value) {
+      if (!value) return null;
+      const target = new Date(value.replace(/\\//g, "-"));
+      if (Number.isNaN(target.getTime())) return null;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      target.setHours(0, 0, 0, 0);
+      return Math.round((target.getTime() - today.getTime()) / 86400000);
+    }
+
+    function deadlineClass(value) {
+      const days = daysUntil(value);
+      if (days === null) return "";
+      if (days <= 0) return "deadline-today";
+      if (days <= 3) return "deadline-soon";
+      return "";
+    }
+
+    function itemsByCategory(items, category) {
+      return items.filter((item) => item.category === category);
+    }
+
+    function renderMeta(item) {
+      return escapeHtml(LIBRARY_LABELS[item.library]) + "/" + escapeHtml(item.user);
+    }
+
+    function renderItem(item, trailing) {
+      return (
+        '<li class="item">' +
+        '<div class="item-title">' +
+        escapeHtml(item.title) +
+        ' <span class="item-meta">' +
+        renderMeta(item) +
+        "</span>" +
+        (trailing || "") +
+        "</div></li>"
+      );
+    }
+
+    function renderDuplicateGroup(group) {
+      const title = group[0] ? group[0].title : "";
+      const locations = group
+        .map((item) => LIBRARY_LABELS[item.library] + "（" + item.user + "）")
+        .join(" + ");
+      return (
+        '<li class="item duplicate">' +
+        '<div class="item-title">' +
+        escapeHtml(title) +
+        "</div>" +
+        '<div class="item-meta">' +
+        escapeHtml(locations) +
+        "</div></li>"
+      );
+    }
+
+    function renderSection(id, title, items, render, hiddenWhenEmpty, breakdown) {
+      const count = items.length;
+      if (hiddenWhenEmpty && count === 0) return "";
+
+      const body =
+        count === 0
+          ? '<p class="empty">なし</p>'
+          : '<ul class="item-list">' + items.map(render).join("") + "</ul>";
+
+      const breakdownHtml = breakdown
+        ? ' <span class="breakdown">' + breakdown + "</span>"
+        : "";
+
+      return (
+        '<section class="panel" id="' +
+        id +
+        '">' +
+        "<h2>" +
+        title +
+        ' <span class="count">(' +
+        count +
+        ")</span>" +
+        breakdownHtml +
+        "</h2>" +
+        body +
+        "</section>"
+      );
+    }
+
+    function renderCountBreakdown(items) {
+      return LIBRARY_ORDER.map((library) => {
+        const count = items.filter((item) => item.library === library).length;
+        return LIBRARY_LABELS[library] + "(" + count + ")";
+      }).join("、");
+    }
+
+    function renderReservationBreakdown(items) {
+      return LIBRARY_ORDER.map((library) => {
+        const used = items.filter(
+          (item) =>
+            item.library === library &&
+            item.user === "本人" &&
+            (item.category === "reservation" || item.category === "hold_ready"),
+        ).length;
+        const limit = RESERVATION_LIMITS[library];
+        const full = used >= limit ? " reservation-full" : "";
+        return (
+          '<span class="lib-stat' +
+          full +
+          '">' +
+          LIBRARY_LABELS[library] +
+          "(" +
+          used +
+          "/" +
+          limit +
+          ")</span>"
+        );
+      }).join("、");
+    }
+
+    function renderDashboard(data) {
+      const holdReady = itemsByCategory(data.items, "hold_ready");
+      const loans = itemsByCategory(data.items, "loan");
+      const reservations = itemsByCategory(data.items, "reservation");
+
+      document.getElementById("updated").textContent =
+        "最終更新: " + formatDateTime(data.fetchedAt);
+
+      document.getElementById("app").innerHTML =
+        renderSection("duplicates", "重複予約", data.duplicates, renderDuplicateGroup, true) +
+        renderSection(
+          "hold-ready",
+          "受取",
+          holdReady,
+          (item) => {
+            const deadline = formatMonthDay(item.pickupDeadline);
+            const cls = deadlineClass(item.pickupDeadline);
+            const trailing = deadline
+              ? ' <span class="item-detail ' + cls + '">' + escapeHtml(deadline) + "</span>"
+              : "";
+            return renderItem(item, trailing);
+          },
+          false,
+          renderCountBreakdown(holdReady),
+        ) +
+        renderSection(
+          "loans",
+          "返却",
+          loans,
+          (item) => renderItem(item),
+          false,
+          renderCountBreakdown(loans),
+        ) +
+        renderSection(
+          "reservations",
+          "予約中",
+          reservations,
+          (item) => renderItem(item),
+          false,
+          renderReservationBreakdown(data.items),
+        );
+    }
+
+    async function loadDashboard() {
+      const app = document.getElementById("app");
+      try {
+        const res = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        renderDashboard(data);
+      } catch (err) {
+        document.getElementById("updated").textContent = "読み込み失敗";
+        app.innerHTML =
+          '<p class="status error">データの取得に失敗しました。ページを再読み込みしてください。</p>';
+        console.error(err);
+      }
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>
+`;
+
+export async function buildDashboard(data: DashboardData): Promise<void> {
+  await mkdir(DOCS_DIR, { recursive: true });
+  await writeFile(path.join(DOCS_DIR, "index.html"), INDEX_HTML, "utf8");
   await writeFile(path.join(DOCS_DIR, "data.json"), JSON.stringify(data, null, 2), "utf8");
 }
