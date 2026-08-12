@@ -1,539 +1,609 @@
 {
-  "fetchedAt": "2026-07-14T06:55:52.910Z",
+  "fetchedAt": "2026-08-12T08:08:34.602Z",
   "items": [
     {
       "library": "toshima",
       "user": "本人",
       "category": "loan",
-      "title": "休養の「正解」－疲労博士がたどり着いた－",
-      "returnDeadline": "2026/07/25",
+      "title": "777(角川文庫　い59-4)",
+      "returnDeadline": "2026/08/23",
       "loanLibrary": "千早臨時窓口",
       "status": "貸出中",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
-    },
-    {
-      "library": "toshima",
-      "user": "本人",
-      "category": "loan",
-      "title": "Google NotebookLM即効活用大全－情報整理とコミュニケーションを加速させる－",
-      "returnDeadline": "2026/07/25",
-      "loanLibrary": "千早臨時窓口",
-      "status": "貸出中",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
-    },
-    {
-      "library": "toshima",
-      "user": "本人",
-      "category": "loan",
-      "title": "週刊ダイヤモンド 2026.6/20　2026.06.20　114巻　18号　通巻5089号",
-      "returnDeadline": "2026/07/25",
-      "loanLibrary": "千早臨時窓口",
-      "status": "貸出中",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "hold_ready",
-      "title": "コンサル時代に教わった仕事ができる上司の当たり前",
+      "title": "科学が解明した悩んでもしょうがないことリスト",
       "pickupLibrary": "千早臨時窓口",
-      "pickupDeadline": "2026/07/20",
+      "pickupDeadline": "2026/08/18",
       "status": "用意できています",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "AIのド素人ですが、10年後も仕事とお金に困らない方法を教えて下さい!－最悪の未来でも自分だけが助かる本－",
-      "queuePosition": 10,
+      "queuePosition": 7,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "体力おばけへの道－頭も体も疲れにくくなるスゴイ運動－",
-      "queuePosition": 32,
+      "queuePosition": 24,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
-    },
-    {
-      "library": "toshima",
-      "user": "本人",
-      "category": "reservation",
-      "title": "イランとアメリカ、そしてイスラエル－「ガザ以後」の中東－(朝日新書　1050)",
-      "queuePosition": 1,
-      "pickupLibrary": "千早臨時窓口",
-      "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
-    },
-    {
-      "library": "toshima",
-      "user": "本人",
-      "category": "reservation",
-      "title": "すごいジャーナリング－うまくいっている人は紙に何を書いているのか?－",
-      "queuePosition": 1,
-      "pickupLibrary": "千早臨時窓口",
-      "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
-    },
-    {
-      "library": "toshima",
-      "user": "本人",
-      "category": "reservation",
-      "title": "オルカン思考－世界経済を味方につける「長期投資」の教科書－",
-      "queuePosition": 2,
-      "pickupLibrary": "千早臨時窓口",
-      "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
-    },
-    {
-      "library": "toshima",
-      "user": "本人",
-      "category": "reservation",
-      "title": "ありふれた家を建てる",
-      "queuePosition": 3,
-      "pickupLibrary": "千早臨時窓口",
-      "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "中学受験に挑戦したら、想像以上に壮絶でした",
-      "queuePosition": 6,
+      "queuePosition": 3,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "元SAPIXママ中受伴走1095日－コミックエッセイ－",
-      "queuePosition": 32,
+      "queuePosition": 26,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "ギャグ漫画家の母が初めて中受伴走をしてみたら",
-      "queuePosition": 4,
+      "queuePosition": 2,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
-    },
-    {
-      "library": "toshima",
-      "user": "本人",
-      "category": "reservation",
-      "title": "戦国日本VSヨーロッパ－グローバルヒストリーで読み解く信長・秀吉・家康の対外戦略－(集英社新書　1311)",
-      "queuePosition": 1,
-      "pickupLibrary": "千早臨時窓口",
-      "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "お手伝いで自分から楽しく学べる子になる戦略的ほったらかし教育",
-      "queuePosition": 4,
+      "queuePosition": 2,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "プアジャパン－インフレ世界を生き抜く資本戦略－",
-      "queuePosition": 13,
+      "queuePosition": 7,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "疲れ切った人のための勉強法",
-      "queuePosition": 5,
-      "pickupLibrary": "千早臨時窓口",
-      "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
-    },
-    {
-      "library": "toshima",
-      "user": "本人",
-      "category": "reservation",
-      "title": "ストーリーでわかる「起業の科学」－超入門－",
       "queuePosition": 1,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
-    },
-    {
-      "library": "toshima",
-      "user": "本人",
-      "category": "reservation",
-      "title": "さよならの言い方なんて知らない。－THEME OF THE WATER&BISCUIT－[1](新潮文庫nex　こ-60",
-      "queuePosition": 2,
-      "pickupLibrary": "千早臨時窓口",
-      "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "なぜ賃金は上がらないのか－日本経済30年の陥穽－(講談社現代新書　2817)",
-      "queuePosition": 6,
+      "queuePosition": 4,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
-    },
-    {
-      "library": "toshima",
-      "user": "本人",
-      "category": "reservation",
-      "title": "777(角川文庫　い59-4)",
-      "queuePosition": 6,
-      "pickupLibrary": "千早臨時窓口",
-      "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "「早生まれ」は損なのか－生まれ月格差の経済学－(中公新書ラクレ　867)",
-      "queuePosition": 4,
+      "queuePosition": 2,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
     },
     {
       "library": "toshima",
       "user": "本人",
       "category": "reservation",
       "title": "本とは何か(新潮新書　1128)",
-      "queuePosition": 7,
+      "queuePosition": 4,
       "pickupLibrary": "千早臨時窓口",
       "status": "予約中です",
-      "fetchedAt": "2026-07-14T06:55:07.432Z"
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
+    },
+    {
+      "library": "toshima",
+      "user": "本人",
+      "category": "reservation",
+      "title": "ONE PIECE　巻115(ジャンプコミックス)　せかいで1ばんつよいもの",
+      "queuePosition": 3,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
+    },
+    {
+      "library": "toshima",
+      "user": "本人",
+      "category": "reservation",
+      "title": "ハンター×ハンター　NO.39(ジャンプコミックス)　交渉",
+      "queuePosition": 8,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
+    },
+    {
+      "library": "toshima",
+      "user": "本人",
+      "category": "reservation",
+      "title": "となりの筋トレ－小説家は見た!ジムの愉快な日々－",
+      "queuePosition": 6,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
+    },
+    {
+      "library": "toshima",
+      "user": "本人",
+      "category": "reservation",
+      "title": "Google NotebookLM仕事術－自分専用のAIで探す・覚える時間をゼロにする－",
+      "queuePosition": 3,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
+    },
+    {
+      "library": "toshima",
+      "user": "本人",
+      "category": "reservation",
+      "title": "海を破る者(文春文庫　い118-1)",
+      "queuePosition": 4,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
+    },
+    {
+      "library": "toshima",
+      "user": "本人",
+      "category": "reservation",
+      "title": "いのちの食べかた－だれも教えてくれない、世界のヒミツ－(角川つばさ文庫　Bも3-1)",
+      "queuePosition": 2,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
+    },
+    {
+      "library": "toshima",
+      "user": "本人",
+      "category": "reservation",
+      "title": "馬渕流!投資の世界地図－経済の全体像をつかみ、金融市場を読む感度を磨く－",
+      "queuePosition": 2,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:07:39.498Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "loan",
+      "title": "チョコレート戦争(新・名作の愛蔵版)",
+      "returnDeadline": "2026/08/23",
+      "loanLibrary": "千早臨時窓口",
+      "status": "貸出中",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "hold_ready",
+      "title": "読書感想文が書ける(ドラえもんの学習シリーズ　ドラえもんの国語おもしろ攻略)",
+      "pickupLibrary": "千早臨時窓口",
+      "pickupDeadline": "2026/08/17",
+      "status": "用意できています",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "hold_ready",
+      "title": "音のサイエンス(学習まんがドラえもんふしぎのサイエンス)",
+      "pickupLibrary": "千早臨時窓口",
+      "pickupDeadline": "2026/08/18",
+      "status": "用意できています",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "hold_ready",
+      "title": "植物のサイエンス(学習まんがドラえもんふしぎのサイエンス)",
+      "pickupLibrary": "千早臨時窓口",
+      "pickupDeadline": "2026/08/18",
+      "status": "用意できています",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "hold_ready",
+      "title": "月のサイエンス(学習まんがドラえもんふしぎのサイエンス)",
+      "pickupLibrary": "千早臨時窓口",
+      "pickupDeadline": "2026/08/19",
+      "status": "用意できています",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "reservation",
+      "title": "中学受験は挑戦したほうが100倍子どものためになる理由－迷っている親子のための受験のすすめ－",
+      "pickupLibrary": "千早臨時窓口",
+      "status": "回送中です",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "reservation",
+      "title": "星のサイエンス(学習まんがドラえもんふしぎのサイエンス)",
+      "queuePosition": 1,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "reservation",
+      "title": "ミクロのサイエンス(学習まんがドラえもんふしぎのサイエンス)",
+      "queuePosition": 1,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "reservation",
+      "title": "昆虫のサイエンス(学習まんがドラえもんふしぎのサイエンス)",
+      "queuePosition": 1,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "reservation",
+      "title": "深海のサイエンス(学習まんがドラえもんふしぎのサイエンス)",
+      "queuePosition": 4,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "reservation",
+      "title": "恐竜のサイエンス(学習まんがドラえもんふしぎのサイエンス)",
+      "queuePosition": 1,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
+    },
+    {
+      "library": "toshima",
+      "user": "家族",
+      "category": "reservation",
+      "title": "南極のサイエンス(学習まんがドラえもんふしぎのサイエンス)",
+      "queuePosition": 1,
+      "pickupLibrary": "千早臨時窓口",
+      "status": "予約中です",
+      "fetchedAt": "2026-08-12T08:08:08.378Z"
     },
     {
       "library": "shinjuku",
       "user": "本人",
       "category": "loan",
-      "title": "有元葉子魚を食べよう",
-      "returnDeadline": "2026/07/24",
+      "title": "祖母姫、ロンドンへ行く!",
+      "returnDeadline": "2026/08/16",
       "status": "貸出中",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
+      "fetchedAt": "2026-08-12T08:08:25.066Z"
     },
     {
       "library": "shinjuku",
       "user": "本人",
       "category": "loan",
-      "title": "スマホNO!",
-      "returnDeadline": "2026/07/24",
+      "title": "成功した人だけが知っている儲かるスモールビジネス",
+      "returnDeadline": "2026/08/19",
       "status": "貸出中",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
+      "fetchedAt": "2026-08-12T08:08:25.066Z"
     },
     {
       "library": "shinjuku",
       "user": "本人",
       "category": "hold_ready",
-      "title": "ダイコンコン",
+      "title": "地頭力の正体",
       "pickupLibrary": "西落合",
+      "pickupDeadline": "2026/08/16",
       "status": "確保済",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
+      "fetchedAt": "2026-08-12T08:08:25.066Z"
     },
     {
       "library": "shinjuku",
       "user": "本人",
-      "category": "reservation",
-      "title": "あなたの一生を支える世界最高峰の「学び」",
-      "queuePosition": 2,
-      "pickupLibrary": "西落合",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
-    },
-    {
-      "library": "shinjuku",
-      "user": "本人",
-      "category": "reservation",
-      "title": "話が長いエンジニア、答えを急ぐ営業",
-      "queuePosition": 4,
-      "pickupLibrary": "西落合",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
-    },
-    {
-      "library": "shinjuku",
-      "user": "本人",
-      "category": "reservation",
-      "title": "脱スマホ術",
-      "queuePosition": 1,
-      "pickupLibrary": "西落合",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
-    },
-    {
-      "library": "shinjuku",
-      "user": "本人",
-      "category": "reservation",
-      "title": "人生が自動的にうまくいくレッスン",
-      "queuePosition": 2,
-      "pickupLibrary": "西落合",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
-    },
-    {
-      "library": "shinjuku",
-      "user": "本人",
-      "category": "reservation",
-      "title": "会社四季報プロ500 2026年春号 第117号",
-      "queuePosition": 2,
-      "pickupLibrary": "西落合",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
-    },
-    {
-      "library": "shinjuku",
-      "user": "本人",
-      "category": "reservation",
+      "category": "hold_ready",
       "title": "AIで終わる人AIで化ける人",
-      "queuePosition": 2,
       "pickupLibrary": "西落合",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
-    },
-    {
-      "library": "shinjuku",
-      "user": "本人",
-      "category": "reservation",
-      "title": "科学的根拠で子育て",
-      "queuePosition": 33,
-      "pickupLibrary": "西落合",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
+      "pickupDeadline": "2026/08/21",
+      "status": "確保済",
+      "fetchedAt": "2026-08-12T08:08:25.066Z"
     },
     {
       "library": "shinjuku",
       "user": "本人",
       "category": "reservation",
       "title": "どっちが強い!?荒ぶる巨大鳥バトル",
-      "queuePosition": 3,
       "pickupLibrary": "西落合",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
+      "status": "回送中",
+      "fetchedAt": "2026-08-12T08:08:25.066Z"
     },
     {
       "library": "shinjuku",
       "user": "本人",
       "category": "reservation",
-      "title": "成功した人だけが知っている儲かるスモールビジネス",
+      "title": "あなたの一生を支える世界最高峰の「学び」",
       "queuePosition": 1,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:42.037Z"
+      "fetchedAt": "2026-08-12T08:08:25.066Z"
+    },
+    {
+      "library": "shinjuku",
+      "user": "本人",
+      "category": "reservation",
+      "title": "話が長いエンジニア、答えを急ぐ営業",
+      "queuePosition": 3,
+      "pickupLibrary": "西落合",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:25.066Z"
+    },
+    {
+      "library": "shinjuku",
+      "user": "本人",
+      "category": "reservation",
+      "title": "会社四季報プロ500 2026年春号 第117号",
+      "queuePosition": 1,
+      "pickupLibrary": "西落合",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:25.066Z"
+    },
+    {
+      "library": "shinjuku",
+      "user": "本人",
+      "category": "reservation",
+      "title": "科学的根拠で子育て",
+      "queuePosition": 12,
+      "pickupLibrary": "西落合",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:25.066Z"
+    },
+    {
+      "library": "shinjuku",
+      "user": "本人",
+      "category": "reservation",
+      "title": "東大理三の世界",
+      "queuePosition": 5,
+      "pickupLibrary": "西落合",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:25.066Z"
+    },
+    {
+      "library": "shinjuku",
+      "user": "本人",
+      "category": "reservation",
+      "title": "中学受験の味方",
+      "queuePosition": 3,
+      "pickupLibrary": "西落合",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:25.066Z"
     },
     {
       "library": "shinjuku",
       "user": "家族",
       "category": "loan",
-      "title": "どっちが強い!?ピットブルvsオオヤマネコ",
-      "returnDeadline": "2026/07/25",
+      "title": "はれときどきぶた",
+      "returnDeadline": "2026/08/16",
       "status": "貸出中",
-      "fetchedAt": "2026-07-14T06:55:48.708Z"
+      "fetchedAt": "2026-08-12T08:08:31.048Z"
     },
     {
       "library": "shinjuku",
       "user": "家族",
       "category": "loan",
-      "title": "かいけつゾロリきょうふのちょうとっきゅう",
-      "returnDeadline": "2026/07/25",
+      "title": "そうなんだ!日本の歴史のお話 戦国時代〜現代編",
+      "returnDeadline": "2026/08/19",
       "status": "貸出中",
-      "fetchedAt": "2026-07-14T06:55:48.708Z"
-    },
-    {
-      "library": "shinjuku",
-      "user": "家族",
-      "category": "loan",
-      "title": "どっちが強い!?リカオンvsモリイノシシ",
-      "returnDeadline": "2026/07/25",
-      "status": "貸出中",
-      "fetchedAt": "2026-07-14T06:55:48.708Z"
+      "fetchedAt": "2026-08-12T08:08:31.048Z"
     },
     {
       "library": "shinjuku",
       "user": "家族",
       "category": "reservation",
       "title": "どっちが強い!?大乱闘 忍者vsカウボーイ",
-      "queuePosition": 14,
+      "queuePosition": 11,
       "pickupLibrary": "西落合",
       "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:48.708Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "loan",
-      "title": "年収300万円から年配当804万円をもらう「激・増配株」投資入門",
-      "returnDeadline": "2026/07/28",
-      "loanLibrary": "中野東",
-      "status": "貸出中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "loan",
-      "title": "のびーる国語究極の作文力",
-      "returnDeadline": "2026/07/28",
-      "loanLibrary": "中野東",
-      "status": "貸出中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
+      "fetchedAt": "2026-08-12T08:08:31.048Z"
     },
     {
       "library": "nakano",
       "user": "本人",
       "category": "reservation",
-      "title": "二月の勝者 19",
-      "queuePosition": 1,
+      "title": "カグラバチ 09",
+      "queuePosition": 7,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
     },
     {
       "library": "nakano",
       "user": "本人",
       "category": "reservation",
-      "title": "二月の勝者 20",
-      "queuePosition": 1,
+      "title": "カグラバチ 10",
+      "queuePosition": 6,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
     },
     {
       "library": "nakano",
       "user": "本人",
       "category": "reservation",
       "title": "二月の勝者 21",
-      "queuePosition": 15,
+      "queuePosition": 10,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "reservation",
-      "title": "THE WEALTH LADDER富の階段",
-      "queuePosition": 4,
-      "pickupLibrary": "中野東",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
     },
     {
       "library": "nakano",
       "user": "本人",
       "category": "reservation",
       "title": "2034",
-      "queuePosition": 21,
+      "queuePosition": 13,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "reservation",
-      "title": "北極星",
-      "queuePosition": 3,
-      "pickupLibrary": "中野東",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "reservation",
-      "title": "東大教授がおしえる超!やばい日本史",
-      "queuePosition": 4,
-      "pickupLibrary": "中野東",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
     },
     {
       "library": "nakano",
       "user": "本人",
       "category": "reservation",
       "title": "億までの人億からの人",
-      "queuePosition": 54,
+      "queuePosition": 40,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "reservation",
-      "title": "「教える」を手放す",
-      "queuePosition": 2,
-      "pickupLibrary": "中野東",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
     },
     {
       "library": "nakano",
       "user": "本人",
       "category": "reservation",
       "title": "のびーる国語無敵の語彙力",
-      "queuePosition": 9,
+      "queuePosition": 1,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
-    },
-    {
-      "library": "nakano",
-      "user": "本人",
-      "category": "reservation",
-      "title": "村井さんちのお取り寄せ",
-      "queuePosition": 3,
-      "pickupLibrary": "中野東",
-      "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
     },
     {
       "library": "nakano",
       "user": "本人",
       "category": "reservation",
       "title": "世界のエリートが学んでいる教養としての超現代史",
-      "queuePosition": 10,
+      "queuePosition": 5,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
     },
     {
       "library": "nakano",
       "user": "本人",
       "category": "reservation",
       "title": "人生のモヤモヤから解放される!「やりたいこと」の地図",
-      "queuePosition": 3,
+      "queuePosition": 2,
       "pickupLibrary": "中野東",
       "status": "予約中",
-      "fetchedAt": "2026-07-14T06:55:52.910Z"
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
+    },
+    {
+      "library": "nakano",
+      "user": "本人",
+      "category": "reservation",
+      "title": "のびーる社会世界の地理",
+      "queuePosition": 14,
+      "pickupLibrary": "中野東",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
+    },
+    {
+      "library": "nakano",
+      "user": "本人",
+      "category": "reservation",
+      "title": "しゃシャリでてすみません",
+      "queuePosition": 1,
+      "pickupLibrary": "中野東",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
+    },
+    {
+      "library": "nakano",
+      "user": "本人",
+      "category": "reservation",
+      "title": "となりの筋トレ",
+      "queuePosition": 6,
+      "pickupLibrary": "中野東",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
+    },
+    {
+      "library": "nakano",
+      "user": "本人",
+      "category": "reservation",
+      "title": "カグラバチ 08",
+      "queuePosition": 1,
+      "pickupLibrary": "中野東",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
+    },
+    {
+      "library": "nakano",
+      "user": "本人",
+      "category": "reservation",
+      "title": "カグラバチ 11",
+      "queuePosition": 6,
+      "pickupLibrary": "中野東",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
+    },
+    {
+      "library": "nakano",
+      "user": "本人",
+      "category": "reservation",
+      "title": "部下としてのAI",
+      "queuePosition": 28,
+      "pickupLibrary": "中野東",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
+    },
+    {
+      "library": "nakano",
+      "user": "本人",
+      "category": "reservation",
+      "title": "全国激安物件探求!「全国を旅する不動産」投資術",
+      "queuePosition": 1,
+      "pickupLibrary": "中野東",
+      "status": "予約中",
+      "fetchedAt": "2026-08-12T08:08:34.602Z"
     }
   ],
   "duplicates": []

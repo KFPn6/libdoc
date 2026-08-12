@@ -193,13 +193,25 @@ const INDEX_HTML = `<!DOCTYPE html>
       return escapeHtml(LIBRARY_LABELS[item.library]) + "/" + escapeHtml(item.user);
     }
 
-    function renderItem(item, trailing) {
+    function renderReservationMeta(item) {
+      const base = renderMeta(item);
+      if (/回送/.test(item.status || "")) {
+        return base + "回送中";
+      }
+      if (item.queuePosition != null) {
+        return base + String(item.queuePosition);
+      }
+      return base;
+    }
+
+    function renderItem(item, trailing, meta) {
+      const metaHtml = meta !== undefined ? meta : renderMeta(item);
       return (
         '<li class="item">' +
         '<div class="item-title">' +
         escapeHtml(item.title) +
         ' <span class="item-meta">' +
-        renderMeta(item) +
+        metaHtml +
         "</span>" +
         (trailing || "") +
         "</div></li>"
@@ -319,7 +331,7 @@ const INDEX_HTML = `<!DOCTYPE html>
           "reservations",
           "予約中",
           reservations,
-          (item) => renderItem(item),
+          (item) => renderItem(item, "", renderReservationMeta(item)),
           false,
           renderReservationBreakdown(data.items),
         );
