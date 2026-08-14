@@ -5,6 +5,8 @@ on:
   schedule:
     # 日本時間 朝6時 = UTC 21:00
     - cron: "0 21 * * *"
+    # 日本時間 12時 = UTC 03:00
+    - cron: "0 3 * * *"
 
 permissions:
   contents: read
