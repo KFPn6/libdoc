@@ -46,7 +46,9 @@ npm run fetch-and-build
 
 ## 定期実行 / 公開
 
-`.github/workflows/fetch.yml` により GitHub Actions で 1日1回（および手動）実行し、`docs/` を GitHub Pages へデプロイします。
+`.github/workflows/fetch.yml` により GitHub Actions で毎日2回（日本時間の朝6時・12時、および手動）実行し、`docs/` を GitHub Pages へデプロイします。
+
+60日間リポジトリへの push（コミット）がないと、GitHub 側でスケジュール実行が自動停止します。停止した場合は、Actions タブからワークフローを再有効化するか、何らかの push を行ってください。
 
 ## 構成
 
