@@ -8,6 +8,8 @@ node_modules/
 
 # ビルド成果物
 dist/
+docs/index.html
+docs/data.json
 
 # Playwright
 /test-results/
