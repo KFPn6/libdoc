@@ -106,6 +106,7 @@ const INDEX_HTML = `<!DOCTYPE html>
     }
     .deadline-today { color: var(--danger); font-weight: 600; }
     .deadline-soon { color: var(--soon); font-weight: 600; }
+    .kaisou { color: var(--danger); font-weight: 600; }
     .empty {
       margin: 0;
       color: var(--muted);
@@ -196,7 +197,7 @@ const INDEX_HTML = `<!DOCTYPE html>
     function renderReservationMeta(item) {
       const base = renderMeta(item);
       if (/回送/.test(item.status || "")) {
-        return base + "回送中";
+        return base + '<span class="kaisou">回送中</span>';
       }
       if (item.queuePosition != null) {
         return base + String(item.queuePosition);
