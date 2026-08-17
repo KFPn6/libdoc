@@ -104,9 +104,8 @@ const INDEX_HTML = `<!DOCTYPE html>
       font-weight: normal;
       font-size: 0.9rem;
     }
-    .deadline-today { color: var(--danger); font-weight: 600; }
+    .deadline-today, .kaisou { color: var(--danger); font-weight: 600; }
     .deadline-soon { color: var(--soon); font-weight: 600; }
-    .kaisou { color: var(--danger); font-weight: 600; }
     .empty {
       margin: 0;
       color: var(--muted);
@@ -194,15 +193,24 @@ const INDEX_HTML = `<!DOCTYPE html>
       return escapeHtml(LIBRARY_LABELS[item.library]) + "/" + escapeHtml(item.user);
     }
 
+    function isKaisou(item) {
+      return /回送/.test(item.status || "");
+    }
+
     function renderReservationMeta(item) {
       const base = renderMeta(item);
-      if (/回送/.test(item.status || "")) {
-        return base + '<span class="kaisou">回送中</span>';
-      }
+      if (isKaisou(item)) return base;
       if (item.queuePosition != null) {
         return base + String(item.queuePosition);
       }
       return base;
+    }
+
+    function renderReservationItem(item) {
+      const trailing = isKaisou(item)
+        ? ' <span class="item-detail kaisou">回送中</span>'
+        : "";
+      return renderItem(item, trailing, renderReservationMeta(item));
     }
 
     function renderItem(item, trailing, meta) {
@@ -332,7 +340,7 @@ const INDEX_HTML = `<!DOCTYPE html>
           "reservations",
           "予約中",
           reservations,
-          (item) => renderItem(item, "", renderReservationMeta(item)),
+          (item) => renderReservationItem(item),
           false,
           renderReservationBreakdown(data.items),
         );
