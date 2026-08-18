@@ -1,209 +1,280 @@
+import { chromium } from "playwright";
 import type { LibraryClosureDate } from "../types.js";
 
-function addDays(date: Date, days: number): Date {
-  const result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
-}
+const LIBRARY_CALENDAR_URLS: Record<string, { pid?: string; url?: string; name: string }> = {
+  // 豊島区
+  "千早臨時窓口": {
+    pid: "104",
+    name: "千早図書館臨時窓口",
+  },
+  駒込: { pid: "101", name: "駒込図書館" },
+  巣鴨: { pid: "102", name: "巣鴨図書館" },
+  池袋: { pid: "105", name: "池袋図書館" },
+  目白: { pid: "103", name: "目白図書館" },
+  上池袋: { pid: "106", name: "上池袋図書館" },
+  中央豊島: { pid: "100", name: "中央図書館" },
 
-function formatDate(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
+  // 新宿区
+  西落合: {
+    url: "https://www.library.shinjuku.tokyo.jp/facility/nishiochiai/calendar/index.html",
+    name: "西落合図書館",
+  },
+  四谷: {
+    url: "https://www.library.shinjuku.tokyo.jp/facility/yotsuya/calendar/index.html",
+    name: "四谷図書館",
+  },
+  鶴巻: {
+    url: "https://www.library.shinjuku.tokyo.jp/facility/tsurumaki/calendar/index.html",
+    name: "鶴巻図書館",
+  },
+  戸山: {
+    url: "https://www.library.shinjuku.tokyo.jp/facility/toyama/calendar/index.html",
+    name: "戸山図書館",
+  },
 
-function getNthDayOfMonth(year: number, month: number, weekday: number, nth: number): Date | null {
-  const firstDay = new Date(year, month - 1, 1);
-  let count = 0;
-  let current = new Date(firstDay);
+  // 中野区
+  中野東: {
+    url: "https://www.kn.licsre-saas.jp/tokyo-nakano/webopac/library.do?lib=08",
+    name: "中野東図書館",
+  },
+  中央中野: {
+    url: "https://www.kn.licsre-saas.jp/tokyo-nakano/webopac/library.do?lib=01",
+    name: "中央図書館",
+  },
+};
 
-  while (current.getMonth() === month - 1) {
-    if (current.getDay() === weekday) {
-      count++;
-      if (count === nth) {
-        return current;
-      }
-    }
-    current = addDays(current, 1);
-  }
-
-  return null;
-}
-
-function getLastFridayOfMonth(year: number, month: number): Date | null {
-  const lastDay = new Date(year, month, 0);
-  let current = new Date(lastDay);
-
-  while (current.getMonth() === month - 1) {
-    if (current.getDay() === 5) {
-      return current;
-    }
-    current = addDays(current, -1);
-  }
-
-  return null;
-}
-
-export function calculateToshimaClosureDates(
-  libraryName: string,
-  startDate: Date,
-  months: number = 3
-): LibraryClosureDate[] {
+async function fetchToshimaCalendar(
+  pid: string,
+  libraryName: string
+): Promise<LibraryClosureDate[]> {
+  const browser = await chromium.launch({ 
+    headless: true,
+    timeout: 30000
+  });
+  const context = await browser.newContext();
+  const page = await context.newPage();
   const closureDates: LibraryClosureDate[] = [];
-  const libraryFullName = `${libraryName}図書館`;
 
-  if (libraryName === "千早") {
-    closureDates.push({
-      library: "toshima",
-      libraryName: libraryFullName,
-      date: "2026-03-16",
-      reason: "改築のため2028年11月末まで長期休館",
+  try {
+    await page.goto(`https://www.library.toshima.tokyo.jp/contents?pid=${pid}`, {
+      waitUntil: "load",
+      timeout: 30000,
     });
-    return closureDates;
-  }
 
-  const endDate = addDays(startDate, months * 31);
-  let current = new Date(startDate);
+    await page.waitForTimeout(2000);
 
-  while (current <= endDate) {
-    const year = current.getFullYear();
-    const month = current.getMonth() + 1;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    const firstTuesday = getNthDayOfMonth(year, month, 2, 1);
-    if (firstTuesday && firstTuesday >= startDate && firstTuesday <= endDate) {
-      closureDates.push({
-        library: "toshima",
-        libraryName: libraryFullName,
-        date: formatDate(firstTuesday),
-        reason: "定期休館日（第1火曜）",
-      });
+    // ページから年月情報を取得
+    const pageContent = await page.content();
+    const yearMonthRegex = /(\d{4})年(\d{1,2})月/g;
+    const monthMatches = [...pageContent.matchAll(yearMonthRegex)];
+    
+    if (monthMatches.length === 0) {
+      console.warn(`No month information found for ${libraryName}`);
+      return closureDates;
     }
 
-    const fourthFriday = getNthDayOfMonth(year, month, 5, 4);
-    if (fourthFriday && fourthFriday >= startDate && fourthFriday <= endDate) {
-      closureDates.push({
-        library: "toshima",
-        libraryName: libraryFullName,
-        date: formatDate(fourthFriday),
-        reason: "館内整理日（第4金曜）",
-      });
-    }
+    // 最初の2つの月情報を使用（通常は当月と翌月）
+    const months = monthMatches.slice(0, 2).map(m => ({
+      year: parseInt(m[1]),
+      month: parseInt(m[2])
+    }));
 
-    current = new Date(year, month, 1);
-  }
+    const tables = await page.locator("table").all();
+    
+    for (let i = 0; i < Math.min(tables.length, months.length); i++) {
+      const { year, month } = months[i];
+      const cells = await tables[i].locator("td").all();
+      
+      for (const cell of cells) {
+        const text = (await cell.textContent()) || "";
+        if (!text.includes("休館")) continue;
 
-  return closureDates.sort((a, b) => a.date.localeCompare(b.date));
-}
+        const dayMatch = text.match(/^(\d{1,2})/);
+        if (!dayMatch) continue;
 
-export function calculateShinjukuClosureDates(
-  libraryName: string,
-  startDate: Date,
-  months: number = 3
-): LibraryClosureDate[] {
-  const closureDates: LibraryClosureDate[] = [];
-  const libraryFullName = `${libraryName}図書館`;
-  const endDate = addDays(startDate, months * 31);
-  let current = new Date(startDate);
+        const day = parseInt(dayMatch[1]);
+        const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        const checkDate = new Date(dateStr);
 
-  while (current <= endDate) {
-    const year = current.getFullYear();
-    const month = current.getMonth() + 1;
-
-    let day = 1;
-    while (day <= 31) {
-      const checkDate = new Date(year, month - 1, day);
-      if (checkDate.getMonth() !== month - 1) break;
-
-      if (checkDate >= startDate && checkDate <= endDate) {
-        if (checkDate.getDay() === 1) {
+        if (checkDate >= today && checkDate.getMonth() === month - 1) {
           closureDates.push({
-            library: "shinjuku",
-            libraryName: libraryFullName,
-            date: formatDate(checkDate),
-            reason: "定期休館日（月曜）",
+            library: "toshima",
+            libraryName,
+            date: dateStr,
+            reason: "休館日",
           });
         }
       }
-
-      day++;
     }
-
-    const thirdThursday = getNthDayOfMonth(year, month, 4, 3);
-    if (thirdThursday && thirdThursday >= startDate && thirdThursday <= endDate) {
-      closureDates.push({
-        library: "shinjuku",
-        libraryName: libraryFullName,
-        date: formatDate(thirdThursday),
-        reason: "館内整理日（第3木曜）",
-      });
-    }
-
-    current = new Date(year, month, 1);
+  } catch (error) {
+    console.error(`Error fetching Toshima calendar for ${libraryName}:`, error);
+  } finally {
+    await browser.close();
   }
 
   return closureDates.sort((a, b) => a.date.localeCompare(b.date));
 }
 
-export function calculateNakanoClosureDates(
-  libraryName: string,
-  startDate: Date,
-  months: number = 3
-): LibraryClosureDate[] {
+async function fetchShinjukuCalendar(
+  url: string,
+  libraryName: string
+): Promise<LibraryClosureDate[]> {
+  const browser = await chromium.launch({ 
+    headless: true,
+    timeout: 30000
+  });
+  const context = await browser.newContext();
+  const page = await context.newPage();
   const closureDates: LibraryClosureDate[] = [];
-  const libraryFullName = `${libraryName}図書館`;
-  const endDate = addDays(startDate, months * 31);
-  let current = new Date(startDate);
 
-  while (current <= endDate) {
-    const year = current.getFullYear();
-    const month = current.getMonth() + 1;
+  try {
+    await page.goto(url, {
+      waitUntil: "load",
+      timeout: 30000,
+    });
 
-    const secondThursday = getNthDayOfMonth(year, month, 4, 2);
-    if (secondThursday && secondThursday >= startDate && secondThursday <= endDate) {
-      closureDates.push({
-        library: "nakano",
-        libraryName: libraryFullName,
-        date: formatDate(secondThursday),
-        reason: "定期休館日（第2木曜）",
-      });
+    await page.waitForTimeout(2000);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const calendarContent = await page.content();
+    
+    const yearMonthRegex = /(\d{4})年(\d{1,2})月/g;
+    let match;
+    const months: Array<{ year: number; month: number }> = [];
+    
+    while ((match = yearMonthRegex.exec(calendarContent)) !== null) {
+      const year = parseInt(match[1]);
+      const month = parseInt(match[2]);
+      if (!months.some(m => m.year === year && m.month === month)) {
+        months.push({ year, month });
+      }
     }
 
-    const lastFriday = getLastFridayOfMonth(year, month);
-    if (lastFriday && lastFriday >= startDate && lastFriday <= endDate) {
-      closureDates.push({
-        library: "nakano",
-        libraryName: libraryFullName,
-        date: formatDate(lastFriday),
-        reason: "館内整理日（最終金曜）",
-      });
-    }
+    const dayRegex = /(\d{1,2})日[^>]*(?:休館|休)/g;
+    const allMatches = calendarContent.matchAll(dayRegex);
+    const days = Array.from(new Set(Array.from(allMatches, m => parseInt(m[1]))));
 
-    current = new Date(year, month, 1);
+    for (const { year, month } of months) {
+      for (const day of days) {
+        const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        const checkDate = new Date(dateStr);
+        
+        if (checkDate >= today && checkDate.getMonth() === month - 1) {
+          closureDates.push({
+            library: "shinjuku",
+            libraryName,
+            date: dateStr,
+            reason: "休館日",
+          });
+        }
+      }
+    }
+  } catch (error) {
+    console.error(`Error fetching Shinjuku calendar for ${libraryName}:`, error);
+  } finally {
+    await browser.close();
   }
 
   return closureDates.sort((a, b) => a.date.localeCompare(b.date));
 }
 
-export function calculateAllClosureDates(
-  libraries: Array<{ library: "toshima" | "shinjuku" | "nakano"; name: string }>,
-  startDate: Date = new Date(),
-  months: number = 3
-): LibraryClosureDate[] {
+async function fetchNakanoCalendar(
+  url: string,
+  libraryName: string
+): Promise<LibraryClosureDate[]> {
+  const browser = await chromium.launch({ 
+    headless: true,
+    timeout: 30000
+  });
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  const closureDates: LibraryClosureDate[] = [];
+
+  try {
+    await page.goto(url, {
+      waitUntil: "load",
+      timeout: 30000,
+    });
+
+    await page.waitForTimeout(2000);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const calendarContent = await page.content();
+    
+    const yearMonthRegex = /(\d{4})年(\d{1,2})月/g;
+    let match;
+    const months: Array<{ year: number; month: number }> = [];
+    
+    while ((match = yearMonthRegex.exec(calendarContent)) !== null) {
+      const year = parseInt(match[1]);
+      const month = parseInt(match[2]);
+      if (!months.some(m => m.year === year && m.month === month)) {
+        months.push({ year, month });
+      }
+    }
+
+    const dayRegex = /(\d{1,2})[^>]*休/g;
+    const allMatches = calendarContent.matchAll(dayRegex);
+    const days = Array.from(new Set(Array.from(allMatches, m => parseInt(m[1]))));
+
+    for (const { year, month } of months) {
+      for (const day of days) {
+        const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        const checkDate = new Date(dateStr);
+        
+        if (checkDate >= today && checkDate.getMonth() === month - 1) {
+          closureDates.push({
+            library: "nakano",
+            libraryName,
+            date: dateStr,
+            reason: "休館日",
+          });
+        }
+      }
+    }
+  } catch (error) {
+    console.error(`Error fetching Nakano calendar for ${libraryName}:`, error);
+  } finally {
+    await browser.close();
+  }
+
+  return closureDates.sort((a, b) => a.date.localeCompare(b.date));
+}
+
+export async function fetchAllClosureDates(
+  libraries: Array<{ library: "toshima" | "shinjuku" | "nakano"; name: string }>
+): Promise<LibraryClosureDate[]> {
   const allClosureDates: LibraryClosureDate[] = [];
 
   for (const lib of libraries) {
-    let dates: LibraryClosureDate[] = [];
-    
-    if (lib.library === "toshima") {
-      dates = calculateToshimaClosureDates(lib.name, startDate, months);
-    } else if (lib.library === "shinjuku") {
-      dates = calculateShinjukuClosureDates(lib.name, startDate, months);
-    } else if (lib.library === "nakano") {
-      dates = calculateNakanoClosureDates(lib.name, startDate, months);
+    try {
+      const config = LIBRARY_CALENDAR_URLS[lib.name];
+      if (!config) {
+        console.warn(`Unknown library: ${lib.name}`);
+        continue;
+      }
+
+      let dates: LibraryClosureDate[] = [];
+
+      if (lib.library === "toshima" && config.pid) {
+        dates = await fetchToshimaCalendar(config.pid, config.name);
+      } else if (lib.library === "shinjuku" && config.url) {
+        dates = await fetchShinjukuCalendar(config.url, config.name);
+      } else if (lib.library === "nakano" && config.url) {
+        dates = await fetchNakanoCalendar(config.url, config.name);
+      }
+
+      allClosureDates.push(...dates);
+    } catch (error) {
+      console.error(`Failed to fetch closure dates for ${lib.library}/${lib.name}:`, error);
     }
-    
-    allClosureDates.push(...dates);
   }
 
   return allClosureDates.sort((a, b) => a.date.localeCompare(b.date));

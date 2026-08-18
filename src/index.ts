@@ -1,5 +1,5 @@
 import { fetchLibraryItems } from "./adapters/index.js";
-import { calculateAllClosureDates } from "./adapters/closure-dates.js";
+import { fetchAllClosureDates } from "./adapters/closure-dates.js";
 import { buildDashboard } from "./build.js";
 import { loadAccounts } from "./config.js";
 import { buildDashboardData } from "./merge.js";
@@ -22,13 +22,13 @@ async function fetchAll(): Promise<LibraryItem[]> {
 async function main(): Promise<void> {
   const items = await fetchAll();
   
-  console.log(`[fetch] 休館日情報を計算しています...`);
+  console.log(`[fetch] 休館日情報を取得しています...`);
   const targetLibraries = [
-    { library: "toshima" as const, name: "千早" },
+    { library: "toshima" as const, name: "千早臨時窓口" },
     { library: "shinjuku" as const, name: "西落合" },
     { library: "nakano" as const, name: "中野東" },
   ];
-  const closureDates = calculateAllClosureDates(targetLibraries);
+  const closureDates = await fetchAllClosureDates(targetLibraries);
   console.log(`[fetch] 休館日情報 — ${closureDates.length} 件`);
   
   const data = buildDashboardData(items);

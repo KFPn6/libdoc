@@ -348,7 +348,7 @@ const INDEX_HTML = `<!DOCTYPE html>
 
       let closureDatesHtml = "";
       if (data.closureDates && data.closureDates.length > 0) {
-        const targetLibraries = ["千早図書館", "西落合図書館", "中野東図書館"];
+        const targetLibraries = ["千早図書館臨時窓口", "西落合図書館", "中野東図書館"];
         const nextClosures = targetLibraries
           .map(name => getNextClosureDate(data.closureDates, name))
           .filter(c => c !== null);
