@@ -132,46 +132,50 @@ async function fetchShinjukuCalendar(
 
   try {
     await page.goto(url, {
-      waitUntil: "load",
+      waitUntil: "networkidle",
       timeout: 30000,
     });
 
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const calendarContent = await page.content();
+    // 新宿区のカレンダーは現在月のみ表示されるようなので、現在月と翌月を想定
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth() + 1;
+    const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+    const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+
+    // 休館日のセルを取得（classにcloseを含む）
+    const closeCells = await page.locator("td.p-open-schedule__calendar-item--close, td[class*='close']").all();
     
-    const yearMonthRegex = /(\d{4})年(\d{1,2})月/g;
-    let match;
-    const months: Array<{ year: number; month: number }> = [];
-    
-    while ((match = yearMonthRegex.exec(calendarContent)) !== null) {
-      const year = parseInt(match[1]);
-      const month = parseInt(match[2]);
-      if (!months.some(m => m.year === year && m.month === month)) {
-        months.push({ year, month });
+    for (const cell of closeCells) {
+      const text = (await cell.textContent()) || "";
+      
+      // "3日月曜日 休館 休館" のような形式から日を抽出
+      const dayMatch = text.match(/(\d{1,2})日/);
+      if (!dayMatch) continue;
+
+      const day = parseInt(dayMatch[1]);
+      
+      // 現在月で試す
+      let dateStr = `${currentYear}-${String(currentMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+      let checkDate = new Date(dateStr);
+      
+      // 日付が現在月と合わない場合は翌月を試す
+      if (checkDate.getMonth() !== currentMonth - 1) {
+        dateStr = `${nextYear}-${String(nextMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        checkDate = new Date(dateStr);
       }
-    }
 
-    const dayRegex = /(\d{1,2})日[^>]*(?:休館|休)/g;
-    const allMatches = calendarContent.matchAll(dayRegex);
-    const days = Array.from(new Set(Array.from(allMatches, m => parseInt(m[1]))));
-
-    for (const { year, month } of months) {
-      for (const day of days) {
-        const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-        const checkDate = new Date(dateStr);
-        
-        if (checkDate >= today && checkDate.getMonth() === month - 1) {
-          closureDates.push({
-            library: "shinjuku",
-            libraryName,
-            date: dateStr,
-            reason: "休館日",
-          });
-        }
+      if (checkDate >= today) {
+        closureDates.push({
+          library: "shinjuku",
+          libraryName,
+          date: dateStr,
+          reason: "休館日",
+        });
       }
     }
   } catch (error) {

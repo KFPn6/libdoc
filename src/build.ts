@@ -116,6 +116,33 @@ const INDEX_HTML = `<!DOCTYPE html>
     .status.error {
       color: var(--danger);
     }
+    .closure-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 0;
+    }
+    @media (max-width: 600px) {
+      .closure-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .closure-item {
+      text-align: center;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+    }
+    .closure-item-name {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .closure-item-date {
+      font-weight: 600;
+      font-size: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -309,6 +336,13 @@ const INDEX_HTML = `<!DOCTYPE html>
       if (!match) return dateStr;
       return match[1] + "/" + match[2].padStart(2, "0") + "/" + match[3].padStart(2, "0");
     }
+    
+    function formatMonthDay(value) {
+      if (!value) return "";
+      const match = value.replace(/\\//g, "-").match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})/);
+      if (!match) return value;
+      return Number(match[2]) + "/" + Number(match[3]);
+    }
 
     function getNextClosureDate(closureDates, libraryName) {
       if (!closureDates || closureDates.length === 0) return null;
@@ -325,16 +359,39 @@ const INDEX_HTML = `<!DOCTYPE html>
       return upcoming.length > 0 ? upcoming[0] : null;
     }
 
-    function renderClosureDateItem(closure) {
-      const reason = closure.reason ? " (" + escapeHtml(closure.reason) + ")" : "";
+    function renderClosureDatesSection(closureDates) {
+      const targetLibraries = [
+        { name: "千早図書館臨時窓口", shortName: "千早臨時" },
+        { name: "西落合図書館", shortName: "西落合" },
+        { name: "中野東図書館", shortName: "中野東" }
+      ];
+      
+      const closureItems = targetLibraries.map(lib => {
+        const nextClosure = getNextClosureDate(closureDates, lib.name);
+        if (nextClosure) {
+          return (
+            '<div class="closure-item">' +
+            '<div class="closure-item-name">' + escapeHtml(lib.shortName) + '</div>' +
+            '<div class="closure-item-date">' + formatMonthDay(nextClosure.date) + '</div>' +
+            '</div>'
+          );
+        } else {
+          return (
+            '<div class="closure-item">' +
+            '<div class="closure-item-name">' + escapeHtml(lib.shortName) + '</div>' +
+            '<div class="closure-item-date">-</div>' +
+            '</div>'
+          );
+        }
+      }).join("");
+      
       return (
-        '<li class="item">' +
-        '<div class="item-title">' +
-        escapeHtml(closure.libraryName) +
-        ' <span class="item-meta">' +
-        formatDate(closure.date) +
-        reason +
-        "</span></div></li>"
+        '<section class="panel" id="closures">' +
+        '<h2>次の休館日</h2>' +
+        '<div class="closure-grid">' +
+        closureItems +
+        '</div>' +
+        '</section>'
       );
     }
 
@@ -348,20 +405,7 @@ const INDEX_HTML = `<!DOCTYPE html>
 
       let closureDatesHtml = "";
       if (data.closureDates && data.closureDates.length > 0) {
-        const targetLibraries = ["千早図書館臨時窓口", "西落合図書館", "中野東図書館"];
-        const nextClosures = targetLibraries
-          .map(name => getNextClosureDate(data.closureDates, name))
-          .filter(c => c !== null);
-        
-        if (nextClosures.length > 0) {
-          closureDatesHtml = renderSection(
-            "closures",
-            "次の休館日",
-            nextClosures,
-            renderClosureDateItem,
-            false
-          );
-        }
+        closureDatesHtml = renderClosureDatesSection(data.closureDates);
       }
 
       document.getElementById("app").innerHTML =
