@@ -303,6 +303,41 @@ const INDEX_HTML = `<!DOCTYPE html>
       }).join("、");
     }
 
+    function formatDate(dateStr) {
+      if (!dateStr) return "";
+      const match = dateStr.match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})/);
+      if (!match) return dateStr;
+      return match[1] + "/" + match[2].padStart(2, "0") + "/" + match[3].padStart(2, "0");
+    }
+
+    function getNextClosureDate(closureDates, libraryName) {
+      if (!closureDates || closureDates.length === 0) return null;
+      
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const upcoming = closureDates
+        .filter(cd => cd.libraryName === libraryName)
+        .map(cd => ({ ...cd, dateObj: new Date(cd.date) }))
+        .filter(cd => cd.dateObj >= today)
+        .sort((a, b) => a.dateObj.getTime() - b.dateObj.getTime());
+      
+      return upcoming.length > 0 ? upcoming[0] : null;
+    }
+
+    function renderClosureDateItem(closure) {
+      const reason = closure.reason ? " (" + escapeHtml(closure.reason) + ")" : "";
+      return (
+        '<li class="item">' +
+        '<div class="item-title">' +
+        escapeHtml(closure.libraryName) +
+        ' <span class="item-meta">' +
+        formatDate(closure.date) +
+        reason +
+        "</span></div></li>"
+      );
+    }
+
     function renderDashboard(data) {
       const holdReady = itemsByCategory(data.items, "hold_ready");
       const loans = itemsByCategory(data.items, "loan");
@@ -311,8 +346,27 @@ const INDEX_HTML = `<!DOCTYPE html>
       document.getElementById("updated").textContent =
         "最終更新: " + formatDateTime(data.fetchedAt);
 
+      let closureDatesHtml = "";
+      if (data.closureDates && data.closureDates.length > 0) {
+        const targetLibraries = ["千早図書館", "西落合図書館", "中野東図書館"];
+        const nextClosures = targetLibraries
+          .map(name => getNextClosureDate(data.closureDates, name))
+          .filter(c => c !== null);
+        
+        if (nextClosures.length > 0) {
+          closureDatesHtml = renderSection(
+            "closures",
+            "次の休館日",
+            nextClosures,
+            renderClosureDateItem,
+            false
+          );
+        }
+      }
+
       document.getElementById("app").innerHTML =
         renderSection("duplicates", "重複予約", data.duplicates, renderDuplicateGroup, true) +
+        closureDatesHtml +
         renderSection(
           "hold-ready",
           "受取",

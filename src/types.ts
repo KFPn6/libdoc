@@ -27,8 +27,16 @@ export type LibraryItem = {
   fetchedAt: string;
 };
 
+export type LibraryClosureDate = {
+  library: LibraryId;
+  libraryName: string;
+  date: string;
+  reason?: string;
+};
+
 export type DashboardData = {
   fetchedAt: string;
   items: LibraryItem[];
   duplicates: LibraryItem[][];
+  closureDates?: LibraryClosureDate[];
 };
