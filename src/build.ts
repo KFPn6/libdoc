@@ -134,14 +134,31 @@ const INDEX_HTML = `<!DOCTYPE html>
       border-radius: 8px;
       background: var(--bg);
     }
+    .closure-item.closed-today {
+      background: #fee2e2;
+      border-color: var(--danger);
+    }
+    @media (prefers-color-scheme: dark) {
+      .closure-item.closed-today {
+        background: #7f1d1d;
+        border-color: var(--danger);
+      }
+    }
     .closure-item-name {
       font-size: 0.85rem;
       color: var(--muted);
       margin-bottom: 4px;
     }
+    .closure-item.closed-today .closure-item-name {
+      color: var(--danger);
+      font-weight: 600;
+    }
     .closure-item-date {
       font-weight: 600;
       font-size: 1rem;
+    }
+    .closure-item.closed-today .closure-item-date {
+      color: var(--danger);
     }
   </style>
 </head>
@@ -359,6 +376,15 @@ const INDEX_HTML = `<!DOCTYPE html>
       return upcoming.length > 0 ? upcoming[0] : null;
     }
 
+    function isToday(dateStr) {
+      if (!dateStr) return false;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const checkDate = new Date(dateStr);
+      checkDate.setHours(0, 0, 0, 0);
+      return today.getTime() === checkDate.getTime();
+    }
+
     function renderClosureDatesSection(closureDates) {
       const targetLibraries = [
         { name: "千早図書館臨時窓口", shortName: "千早臨時" },
@@ -369,8 +395,9 @@ const INDEX_HTML = `<!DOCTYPE html>
       const closureItems = targetLibraries.map(lib => {
         const nextClosure = getNextClosureDate(closureDates, lib.name);
         if (nextClosure) {
+          const closedTodayClass = isToday(nextClosure.date) ? " closed-today" : "";
           return (
-            '<div class="closure-item">' +
+            '<div class="closure-item' + closedTodayClass + '">' +
             '<div class="closure-item-name">' + escapeHtml(lib.shortName) + '</div>' +
             '<div class="closure-item-date">' + formatMonthDay(nextClosure.date) + '</div>' +
             '</div>'
