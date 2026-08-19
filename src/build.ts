@@ -344,6 +344,21 @@ const INDEX_HTML = `<!DOCTYPE html>
       return Number(match[2]) + "/" + Number(match[3]);
     }
 
+    function weekdayLabel(value) {
+      if (!value) return "";
+      const match = value.replace(/\\//g, "-").match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})/);
+      if (!match) return "";
+      const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+      if (Number.isNaN(date.getTime())) return "";
+      return ["日", "月", "火", "水", "木", "金", "土"][date.getDay()] || "";
+    }
+
+    function formatClosureDate(value) {
+      const md = formatMonthDay(value);
+      const wd = weekdayLabel(value);
+      return wd ? md + "（" + wd + "）" : md;
+    }
+
     function getNextClosureDate(closureDates, libraryName) {
       if (!closureDates || closureDates.length === 0) return null;
       
@@ -372,7 +387,7 @@ const INDEX_HTML = `<!DOCTYPE html>
           return (
             '<div class="closure-item">' +
             '<div class="closure-item-name">' + escapeHtml(lib.shortName) + '</div>' +
-            '<div class="closure-item-date">' + formatMonthDay(nextClosure.date) + '</div>' +
+            '<div class="closure-item-date">' + formatClosureDate(nextClosure.date) + '</div>' +
             '</div>'
           );
         } else {

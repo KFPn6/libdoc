@@ -47,6 +47,16 @@ npm run fetch-and-build
 - 指定した図書館の休館日情報を計算
 - `docs/index.html`（ダッシュボード）と `docs/data.json`（取得データ）を生成
 
+### ローカル確認
+
+ダッシュボードは `data.json` を `fetch` で読み込むため、`docs/index.html` をエクスプローラーやエディタから直接開くと（`file://`）データ取得に失敗します。HTTP サーバー経由で開いてください。
+
+```bash
+npx --yes serve docs
+```
+
+表示された URL（例: `http://localhost:3000`）をブラウザで開きます。
+
 ### 休館日情報
 
 デフォルトで以下の図書館の休館日を表示します：
