@@ -148,8 +148,15 @@ const INDEX_HTML = `<!DOCTYPE html>
       border-color: var(--danger);
     }
     .closure-item.today .closure-item-name,
-    .closure-item.today .closure-item-date {
+    .closure-item.today .closure-item-date,
+    .closure-item.today .closure-item-counts {
       color: #fff;
+    }
+    .closure-item-counts {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.4;
     }
   </style>
 </head>
@@ -382,21 +389,63 @@ const INDEX_HTML = `<!DOCTYPE html>
       return upcoming.length > 0 ? upcoming[0] : null;
     }
 
-    function renderClosureDatesSection(closureDates) {
+    function countByUser(items, library, category, user) {
+      return items.filter(
+        (item) =>
+          item.library === library &&
+          item.category === category &&
+          item.user === user,
+      ).length;
+    }
+
+    function renderClosureCounts(items, library, includeFamily) {
+      const holdSelf = countByUser(items, library, "hold_ready", "本人");
+      const holdFamily = includeFamily
+        ? countByUser(items, library, "hold_ready", "家族")
+        : 0;
+      const loanSelf = countByUser(items, library, "loan", "本人");
+      const loanFamily = includeFamily
+        ? countByUser(items, library, "loan", "家族")
+        : 0;
+      const holdTotal = holdSelf + holdFamily;
+      const loanTotal = loanSelf + loanFamily;
+      if (holdTotal + loanTotal === 0) return "";
+
+      const format = (selfCount, familyCount) =>
+        includeFamily
+          ? "(" + selfCount + "," + familyCount + ")"
+          : "(" + selfCount + ")";
+
+      let html = '<div class="closure-item-counts">';
+      if (holdTotal > 0) {
+        html += "<div>受取" + format(holdSelf, holdFamily) + "</div>";
+      } else {
+        html += "<div>&nbsp;</div>";
+      }
+      if (loanTotal > 0) {
+        html += "<div>返却" + format(loanSelf, loanFamily) + "</div>";
+      }
+      html += "</div>";
+      return html;
+    }
+
+    function renderClosureDatesSection(closureDates, items) {
       const targetLibraries = [
-        { name: "千早図書館臨時窓口", shortName: "千早臨時" },
-        { name: "西落合図書館", shortName: "西落合" },
-        { name: "中野東図書館", shortName: "中野東" }
+        { name: "千早図書館臨時窓口", shortName: "千早臨時", library: "toshima", includeFamily: true },
+        { name: "西落合図書館", shortName: "西落合", library: "shinjuku", includeFamily: true },
+        { name: "中野東図書館", shortName: "中野東", library: "nakano", includeFamily: false }
       ];
       
       const closureItems = targetLibraries.map(lib => {
         const nextClosure = getNextClosureDate(closureDates, lib.name);
+        const countsHtml = renderClosureCounts(items || [], lib.library, lib.includeFamily);
         if (nextClosure) {
           const todayClass = daysUntil(nextClosure.date) === 0 ? " today" : "";
           return (
             '<div class="closure-item' + todayClass + '">' +
             '<div class="closure-item-name">' + escapeHtml(lib.shortName) + '</div>' +
             '<div class="closure-item-date">' + formatClosureDate(nextClosure.date) + '</div>' +
+            countsHtml +
             '</div>'
           );
         } else {
@@ -404,6 +453,7 @@ const INDEX_HTML = `<!DOCTYPE html>
             '<div class="closure-item">' +
             '<div class="closure-item-name">' + escapeHtml(lib.shortName) + '</div>' +
             '<div class="closure-item-date">-</div>' +
+            countsHtml +
             '</div>'
           );
         }
@@ -429,7 +479,7 @@ const INDEX_HTML = `<!DOCTYPE html>
 
       let closureDatesHtml = "";
       if (data.closureDates && data.closureDates.length > 0) {
-        closureDatesHtml = renderClosureDatesSection(data.closureDates);
+        closureDatesHtml = renderClosureDatesSection(data.closureDates, data.items);
       }
 
       document.getElementById("app").innerHTML =
