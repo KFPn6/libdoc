@@ -143,6 +143,14 @@ const INDEX_HTML = `<!DOCTYPE html>
       font-weight: 600;
       font-size: 1rem;
     }
+    .closure-item.today {
+      background: var(--danger);
+      border-color: var(--danger);
+    }
+    .closure-item.today .closure-item-name,
+    .closure-item.today .closure-item-date {
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -384,8 +392,9 @@ const INDEX_HTML = `<!DOCTYPE html>
       const closureItems = targetLibraries.map(lib => {
         const nextClosure = getNextClosureDate(closureDates, lib.name);
         if (nextClosure) {
+          const todayClass = daysUntil(nextClosure.date) === 0 ? " today" : "";
           return (
-            '<div class="closure-item">' +
+            '<div class="closure-item' + todayClass + '">' +
             '<div class="closure-item-name">' + escapeHtml(lib.shortName) + '</div>' +
             '<div class="closure-item-date">' + formatClosureDate(nextClosure.date) + '</div>' +
             '</div>'
