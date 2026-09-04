@@ -2,6 +2,11 @@ name: Fetch Library Data
 
 on:
   workflow_dispatch:
+  # main への push（PR マージ含む）でも再生成・再デプロイする。
+  # docs/index.html は gitignore のため、ブランチ由来の Pages 再ビルドだと空になるのを防ぐ。
+  push:
+    branches:
+      - main
   schedule:
     # 日本時間 6時 = UTC 21:00
     - cron: "0 21 * * *"
