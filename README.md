@@ -71,7 +71,15 @@ npx --yes serve docs
 
 ## 定期実行 / 公開
 
-`.github/workflows/fetch.yml` により GitHub Actions で毎日2回（日本時間の朝6時・12時、および手動）実行し、`docs/` を GitHub Pages へデプロイします。
+`.github/workflows/fetch.yml` により GitHub Actions で次のタイミングに実行し、生成した `docs/` を GitHub Pages へデプロイします。
+
+- `main` への push（PR マージ含む）
+- 日本時間 6時 / 12時 / 15時 / 18時（スケジュール）
+- Actions タブからの手動実行
+
+`docs/index.html` と `docs/data.json` は `.gitignore` 対象のためリポジトリには含めず、毎回ワークフローが生成してデプロイします。
+
+GitHub Pages の Source は **GitHub Actions** にしてください（Deploy from a branch だと、マージ時に空の `docs/` だけで再公開されてサイトが消えます）。
 
 60日間リポジトリへの push（コミット）がないと、GitHub 側でスケジュール実行が自動停止します。停止した場合は、Actions タブからワークフローを再有効化するか、何らかの push を行ってください。
 
