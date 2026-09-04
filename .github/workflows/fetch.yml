@@ -3,10 +3,14 @@ name: Fetch Library Data
 on:
   workflow_dispatch:
   schedule:
-    # 日本時間 朝6時 = UTC 21:00
+    # 日本時間 6時 = UTC 21:00
     - cron: "0 21 * * *"
     # 日本時間 12時 = UTC 03:00
     - cron: "0 3 * * *"
+    # 日本時間 15時 = UTC 06:00
+    - cron: "0 6 * * *"
+    # 日本時間 18時 = UTC 09:00
+    - cron: "0 9 * * *"
 
 permissions:
   contents: read
