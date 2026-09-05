@@ -504,7 +504,14 @@ const INDEX_HTML = `<!DOCTYPE html>
           "loans",
           "返却",
           loans,
-          (item) => renderItem(item),
+          (item) => {
+            const deadline = formatMonthDay(item.returnDeadline);
+            const cls = deadlineClass(item.returnDeadline);
+            const trailing = deadline
+              ? ' <span class="item-detail ' + cls + '">' + escapeHtml(deadline) + "</span>"
+              : "";
+            return renderItem(item, trailing);
+          },
           false,
           renderCountBreakdown(loans),
         ) +
