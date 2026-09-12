@@ -8,14 +8,16 @@ on:
     branches:
       - main
   schedule:
-    # 日本時間 6時 = UTC 21:00
-    - cron: "0 21 * * *"
-    # 日本時間 12時 = UTC 03:00
-    - cron: "0 3 * * *"
-    # 日本時間 15時 = UTC 06:00
-    - cron: "0 6 * * *"
-    # 日本時間 18時 = UTC 09:00
-    - cron: "0 9 * * *"
+    # 公開リポジトリでは GitHub Actions の schedule が数時間遅れるため、
+    # cron は目標時刻より早めに設定し、実行がおおよそ JST 6/12/15/18 時になるようにする。
+    # 目標 ~6時 JST（遅れ約2時間想定）→ JST 4時 = UTC 19:00
+    - cron: "0 19 * * *"
+    # 目標 ~12時 JST（遅れ約2〜3時間想定）→ JST 9時 = UTC 00:00
+    - cron: "0 0 * * *"
+    # 目標 ~15時 JST → JST 11時 = UTC 02:00
+    - cron: "0 2 * * *"
+    # 目標 ~18時 JST → JST 13時 = UTC 04:00
+    - cron: "0 4 * * *"
 
 permissions:
   contents: read

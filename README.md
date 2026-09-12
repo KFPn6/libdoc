@@ -74,8 +74,10 @@ npx --yes serve docs
 `.github/workflows/fetch.yml` により GitHub Actions で次のタイミングに実行し、生成した `docs/` を GitHub Pages へデプロイします。
 
 - `main` への push（PR マージ含む）
-- 日本時間 6時 / 12時 / 15時 / 18時（スケジュール）
+- おおよそ日本時間 6時 / 12時 / 15時 / 18時に実行されるよう調整したスケジュール
 - Actions タブからの手動実行
+
+公開リポジトリでは GitHub 側の混雑で `schedule` が遅れるため、cron は目標より早め（JST 4 / 9 / 11 / 13 時 = UTC 19 / 0 / 2 / 4）に設定しています。遅れ幅は日によって変わるので、実測がずれたら再度調整してください。
 
 `docs/index.html` と `docs/data.json` は `.gitignore` 対象のためリポジトリには含めず、毎回ワークフローが生成してデプロイします。
 
