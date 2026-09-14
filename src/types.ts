@@ -1,5 +1,5 @@
 export type LibraryId = "toshima" | "shinjuku" | "nakano";
-export type UserLabel = "本人" | "家族";
+export type UserLabel = "本人" | "家族" | "家族妹";
 export type Category = "hold_ready" | "reservation" | "loan";
 
 export type LibraryAccount = {

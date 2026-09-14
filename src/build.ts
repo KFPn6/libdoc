@@ -398,32 +398,27 @@ const INDEX_HTML = `<!DOCTYPE html>
       ).length;
     }
 
-    function renderClosureCounts(items, library, includeFamily) {
-      const holdSelf = countByUser(items, library, "hold_ready", "本人");
-      const holdFamily = includeFamily
-        ? countByUser(items, library, "hold_ready", "家族")
-        : 0;
-      const loanSelf = countByUser(items, library, "loan", "本人");
-      const loanFamily = includeFamily
-        ? countByUser(items, library, "loan", "家族")
-        : 0;
-      const holdTotal = holdSelf + holdFamily;
-      const loanTotal = loanSelf + loanFamily;
+    function renderClosureCounts(items, library, users) {
+      const holdCounts = users.map((user) =>
+        countByUser(items, library, "hold_ready", user),
+      );
+      const loanCounts = users.map((user) =>
+        countByUser(items, library, "loan", user),
+      );
+      const holdTotal = holdCounts.reduce((sum, count) => sum + count, 0);
+      const loanTotal = loanCounts.reduce((sum, count) => sum + count, 0);
       if (holdTotal + loanTotal === 0) return "";
 
-      const format = (selfCount, familyCount) =>
-        includeFamily
-          ? "(" + selfCount + "," + familyCount + ")"
-          : "(" + selfCount + ")";
+      const format = (counts) => "(" + counts.join(",") + ")";
 
       let html = '<div class="closure-item-counts">';
       if (holdTotal > 0) {
-        html += "<div>受取" + format(holdSelf, holdFamily) + "</div>";
+        html += "<div>受取" + format(holdCounts) + "</div>";
       } else {
         html += "<div>&nbsp;</div>";
       }
       if (loanTotal > 0) {
-        html += "<div>返却" + format(loanSelf, loanFamily) + "</div>";
+        html += "<div>返却" + format(loanCounts) + "</div>";
       }
       html += "</div>";
       return html;
@@ -431,14 +426,14 @@ const INDEX_HTML = `<!DOCTYPE html>
 
     function renderClosureDatesSection(closureDates, items) {
       const targetLibraries = [
-        { name: "千早図書館臨時窓口", shortName: "千早臨時", library: "toshima", includeFamily: true },
-        { name: "西落合図書館", shortName: "西落合", library: "shinjuku", includeFamily: true },
-        { name: "中野東図書館", shortName: "中野東", library: "nakano", includeFamily: false }
+        { name: "千早図書館臨時窓口", shortName: "千早臨時", library: "toshima", users: ["本人", "家族"] },
+        { name: "西落合図書館", shortName: "西落合", library: "shinjuku", users: ["本人", "家族", "家族妹"] },
+        { name: "中野東図書館", shortName: "中野東", library: "nakano", users: ["本人"] }
       ];
       
       const closureItems = targetLibraries.map(lib => {
         const nextClosure = getNextClosureDate(closureDates, lib.name);
-        const countsHtml = renderClosureCounts(items || [], lib.library, lib.includeFamily);
+        const countsHtml = renderClosureCounts(items || [], lib.library, lib.users);
         if (nextClosure) {
           const todayClass = daysUntil(nextClosure.date) === 0 ? " today" : "";
           return (
