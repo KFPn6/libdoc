@@ -398,7 +398,24 @@ const INDEX_HTML = `<!DOCTYPE html>
       ).length;
     }
 
+    function usersForLibrary(items, library, libraryUsers) {
+      const fromAccounts = libraryUsers && libraryUsers[library];
+      if (fromAccounts && fromAccounts.length > 0) return fromAccounts;
+
+      const preferred = ["本人", "家族兄", "家族", "家族妹"];
+      const present = [];
+      for (const item of items) {
+        if (item.library !== library) continue;
+        if (!present.includes(item.user)) present.push(item.user);
+      }
+      return preferred
+        .filter((user) => present.includes(user))
+        .concat(present.filter((user) => !preferred.includes(user)));
+    }
+
     function renderClosureCounts(items, library, users) {
+      if (!users || users.length === 0) return "";
+
       const holdCounts = users.map((user) =>
         countByUser(items, library, "hold_ready", user),
       );
@@ -424,16 +441,17 @@ const INDEX_HTML = `<!DOCTYPE html>
       return html;
     }
 
-    function renderClosureDatesSection(closureDates, items) {
+    function renderClosureDatesSection(closureDates, items, libraryUsers) {
       const targetLibraries = [
-        { name: "千早図書館臨時窓口", shortName: "千早臨時", library: "toshima", users: ["本人", "家族"] },
-        { name: "西落合図書館", shortName: "西落合", library: "shinjuku", users: ["本人", "家族", "家族妹"] },
-        { name: "中野東図書館", shortName: "中野東", library: "nakano", users: ["本人"] }
+        { name: "千早図書館臨時窓口", shortName: "千早臨時", library: "toshima" },
+        { name: "西落合図書館", shortName: "西落合", library: "shinjuku" },
+        { name: "中野東図書館", shortName: "中野東", library: "nakano" }
       ];
       
       const closureItems = targetLibraries.map(lib => {
         const nextClosure = getNextClosureDate(closureDates, lib.name);
-        const countsHtml = renderClosureCounts(items || [], lib.library, lib.users);
+        const users = usersForLibrary(items || [], lib.library, libraryUsers);
+        const countsHtml = renderClosureCounts(items || [], lib.library, users);
         if (nextClosure) {
           const todayClass = daysUntil(nextClosure.date) === 0 ? " today" : "";
           return (
@@ -474,7 +492,11 @@ const INDEX_HTML = `<!DOCTYPE html>
 
       let closureDatesHtml = "";
       if (data.closureDates && data.closureDates.length > 0) {
-        closureDatesHtml = renderClosureDatesSection(data.closureDates, data.items);
+        closureDatesHtml = renderClosureDatesSection(
+          data.closureDates,
+          data.items,
+          data.libraryUsers,
+        );
       }
 
       document.getElementById("app").innerHTML =

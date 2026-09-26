@@ -1,5 +1,5 @@
 export type LibraryId = "toshima" | "shinjuku" | "nakano";
-export type UserLabel = "本人" | "家族" | "家族妹";
+export type UserLabel = "本人" | "家族" | "家族兄" | "家族妹";
 export type Category = "hold_ready" | "reservation" | "loan";
 
 export type LibraryAccount = {
@@ -39,4 +39,6 @@ export type DashboardData = {
   items: LibraryItem[];
   duplicates: LibraryItem[][];
   closureDates?: LibraryClosureDate[];
+  /** 区ごとの利用者表示名（LIBRARY_ACCOUNTS の順）。休館日カードの件数内訳に使う */
+  libraryUsers?: Partial<Record<LibraryId, UserLabel[]>>;
 };
