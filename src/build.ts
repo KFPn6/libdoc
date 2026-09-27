@@ -398,24 +398,11 @@ const INDEX_HTML = `<!DOCTYPE html>
       ).length;
     }
 
-    function usersForLibrary(items, library, libraryUsers) {
-      const fromAccounts = libraryUsers && libraryUsers[library];
-      if (fromAccounts && fromAccounts.length > 0) return fromAccounts;
+    // 休館日カードの件数は全区とも 本人・家族兄・家族妹 の3枠 (x,x,x)
+    const CLOSURE_COUNT_USERS = ["本人", "家族兄", "家族妹"];
 
-      const preferred = ["本人", "家族兄", "家族", "家族妹"];
-      const present = [];
-      for (const item of items) {
-        if (item.library !== library) continue;
-        if (!present.includes(item.user)) present.push(item.user);
-      }
-      return preferred
-        .filter((user) => present.includes(user))
-        .concat(present.filter((user) => !preferred.includes(user)));
-    }
-
-    function renderClosureCounts(items, library, users) {
-      if (!users || users.length === 0) return "";
-
+    function renderClosureCounts(items, library) {
+      const users = CLOSURE_COUNT_USERS;
       const holdCounts = users.map((user) =>
         countByUser(items, library, "hold_ready", user),
       );
@@ -441,7 +428,7 @@ const INDEX_HTML = `<!DOCTYPE html>
       return html;
     }
 
-    function renderClosureDatesSection(closureDates, items, libraryUsers) {
+    function renderClosureDatesSection(closureDates, items) {
       const targetLibraries = [
         { name: "千早図書館臨時窓口", shortName: "千早臨時", library: "toshima" },
         { name: "西落合図書館", shortName: "西落合", library: "shinjuku" },
@@ -450,8 +437,7 @@ const INDEX_HTML = `<!DOCTYPE html>
       
       const closureItems = targetLibraries.map(lib => {
         const nextClosure = getNextClosureDate(closureDates, lib.name);
-        const users = usersForLibrary(items || [], lib.library, libraryUsers);
-        const countsHtml = renderClosureCounts(items || [], lib.library, users);
+        const countsHtml = renderClosureCounts(items || [], lib.library);
         if (nextClosure) {
           const todayClass = daysUntil(nextClosure.date) === 0 ? " today" : "";
           return (
@@ -492,11 +478,7 @@ const INDEX_HTML = `<!DOCTYPE html>
 
       let closureDatesHtml = "";
       if (data.closureDates && data.closureDates.length > 0) {
-        closureDatesHtml = renderClosureDatesSection(
-          data.closureDates,
-          data.items,
-          data.libraryUsers,
-        );
+        closureDatesHtml = renderClosureDatesSection(data.closureDates, data.items);
       }
 
       document.getElementById("app").innerHTML =
