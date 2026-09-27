@@ -389,13 +389,28 @@ const INDEX_HTML = `<!DOCTYPE html>
       return upcoming.length > 0 ? upcoming[0] : null;
     }
 
-    function countByUser(items, library, category, user) {
-      return items.filter(
-        (item) =>
-          item.library === library &&
-          item.category === category &&
-          item.user === user,
-      ).length;
+    function shortUserLabel(user) {
+      if (user === "家族兄") return "兄";
+      if (user === "家族妹") return "妹";
+      return user;
+    }
+
+    function matchesBranchLocation(location, branchKeys) {
+      if (!location) return false;
+      return branchKeys.some((key) => location.indexOf(key) !== -1);
+    }
+
+    function countByUserForBranch(items, library, category, user, branchKeys) {
+      return items.filter((item) => {
+        if (item.library !== library || item.category !== category || item.user !== user) {
+          return false;
+        }
+        const location =
+          category === "loan" ? item.loanLibrary : item.pickupLibrary;
+        // 受取館・貸出館が分かるものはその館だけ数える。不明な貸出は区の代表館カードへ寄せる。
+        if (location) return matchesBranchLocation(location, branchKeys);
+        return category === "loan";
+      }).length;
     }
 
     function usersForLibrary(items, library, libraryUsers) {
@@ -413,29 +428,37 @@ const INDEX_HTML = `<!DOCTYPE html>
         .concat(present.filter((user) => !preferred.includes(user)));
     }
 
-    function renderClosureCounts(items, library, users) {
+    function formatUserCounts(users, counts) {
+      const parts = [];
+      for (let i = 0; i < users.length; i++) {
+        if (counts[i] > 0) {
+          parts.push(shortUserLabel(users[i]) + counts[i]);
+        }
+      }
+      return parts.join(" ");
+    }
+
+    function renderClosureCounts(items, library, users, branchKeys) {
       if (!users || users.length === 0) return "";
 
       const holdCounts = users.map((user) =>
-        countByUser(items, library, "hold_ready", user),
+        countByUserForBranch(items, library, "hold_ready", user, branchKeys),
       );
       const loanCounts = users.map((user) =>
-        countByUser(items, library, "loan", user),
+        countByUserForBranch(items, library, "loan", user, branchKeys),
       );
       const holdTotal = holdCounts.reduce((sum, count) => sum + count, 0);
       const loanTotal = loanCounts.reduce((sum, count) => sum + count, 0);
       if (holdTotal + loanTotal === 0) return "";
 
-      const format = (counts) => "(" + counts.join(",") + ")";
-
       let html = '<div class="closure-item-counts">';
       if (holdTotal > 0) {
-        html += "<div>受取" + format(holdCounts) + "</div>";
+        html += "<div>受取 " + escapeHtml(formatUserCounts(users, holdCounts)) + "</div>";
       } else {
         html += "<div>&nbsp;</div>";
       }
       if (loanTotal > 0) {
-        html += "<div>返却" + format(loanCounts) + "</div>";
+        html += "<div>返却 " + escapeHtml(formatUserCounts(users, loanCounts)) + "</div>";
       }
       html += "</div>";
       return html;
@@ -443,15 +466,20 @@ const INDEX_HTML = `<!DOCTYPE html>
 
     function renderClosureDatesSection(closureDates, items, libraryUsers) {
       const targetLibraries = [
-        { name: "千早図書館臨時窓口", shortName: "千早臨時", library: "toshima" },
-        { name: "西落合図書館", shortName: "西落合", library: "shinjuku" },
-        { name: "中野東図書館", shortName: "中野東", library: "nakano" }
+        { name: "千早図書館臨時窓口", shortName: "千早臨時", library: "toshima", branchKeys: ["千早"] },
+        { name: "西落合図書館", shortName: "西落合", library: "shinjuku", branchKeys: ["西落合"] },
+        { name: "中野東図書館", shortName: "中野東", library: "nakano", branchKeys: ["中野東"] }
       ];
       
       const closureItems = targetLibraries.map(lib => {
         const nextClosure = getNextClosureDate(closureDates, lib.name);
         const users = usersForLibrary(items || [], lib.library, libraryUsers);
-        const countsHtml = renderClosureCounts(items || [], lib.library, users);
+        const countsHtml = renderClosureCounts(
+          items || [],
+          lib.library,
+          users,
+          lib.branchKeys,
+        );
         if (nextClosure) {
           const todayClass = daysUntil(nextClosure.date) === 0 ? " today" : "";
           return (
@@ -509,8 +537,17 @@ const INDEX_HTML = `<!DOCTYPE html>
           (item) => {
             const deadline = formatMonthDay(item.pickupDeadline);
             const cls = deadlineClass(item.pickupDeadline);
-            const trailing = deadline
-              ? ' <span class="item-detail ' + cls + '">' + escapeHtml(deadline) + "</span>"
+            const bits = [];
+            if (item.pickupLibrary) {
+              bits.push(escapeHtml(item.pickupLibrary));
+            }
+            if (deadline) {
+              bits.push(
+                '<span class="' + cls + '">' + escapeHtml(deadline) + "</span>",
+              );
+            }
+            const trailing = bits.length
+              ? ' <span class="item-detail">' + bits.join(" ") + "</span>"
               : "";
             return renderItem(item, trailing);
           },
