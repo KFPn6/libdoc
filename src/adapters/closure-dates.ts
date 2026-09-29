@@ -1,4 +1,4 @@
-import { chromium } from "playwright";
+import { chromium, type Page } from "playwright";
 import type { LibraryClosureDate } from "../types.js";
 
 const LIBRARY_CALENDAR_URLS: Record<string, { pid?: string; url?: string; name: string }> = {
@@ -118,65 +118,95 @@ async function fetchToshimaCalendar(
   return closureDates.sort((a, b) => a.date.localeCompare(b.date));
 }
 
+function ymQuery(year: number, month: number): string {
+  return `${year}/${String(month).padStart(2, "0")}`;
+}
+
+function nextYearMonth(year: number, month: number): { year: number; month: number } {
+  return month === 12 ? { year: year + 1, month: 1 } : { year, month: month + 1 };
+}
+
+async function scrapeShinjukuMonth(
+  page: Page,
+  url: string,
+  libraryName: string,
+  today: Date
+): Promise<LibraryClosureDate[]> {
+  await page.goto(url, {
+    waitUntil: "networkidle",
+    timeout: 30000,
+  });
+  await page.waitForTimeout(2000);
+
+  const yearText = (await page.locator(".p-open-schedule__calendar-year").first().textContent())?.trim();
+  const monthText = (await page.locator(".p-open-schedule__calendar-month").first().textContent())?.trim();
+  const year = yearText ? parseInt(yearText, 10) : NaN;
+  const month = monthText ? parseInt(monthText, 10) : NaN;
+
+  if (!Number.isFinite(year) || !Number.isFinite(month)) {
+    console.warn(`Could not read calendar year/month for ${libraryName} (${url})`);
+    return [];
+  }
+
+  const dates: LibraryClosureDate[] = [];
+  const closeCells = await page
+    .locator("td.p-open-schedule__calendar-item--close, td[class*='close']")
+    .all();
+
+  for (const cell of closeCells) {
+    const text = (await cell.textContent()) || "";
+    // "3日月曜日 休館 休館" のような形式から日を抽出
+    const dayMatch = text.match(/(\d{1,2})日/);
+    if (!dayMatch) continue;
+
+    const day = parseInt(dayMatch[1], 10);
+    const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const checkDate = new Date(`${dateStr}T00:00:00`);
+
+    // カレンダー外の日番号や無効日付を除外
+    if (checkDate.getFullYear() !== year || checkDate.getMonth() !== month - 1) continue;
+    if (checkDate < today) continue;
+
+    dates.push({
+      library: "shinjuku",
+      libraryName,
+      date: dateStr,
+      reason: "休館日",
+    });
+  }
+
+  return dates;
+}
+
 async function fetchShinjukuCalendar(
   url: string,
   libraryName: string
 ): Promise<LibraryClosureDate[]> {
-  const browser = await chromium.launch({ 
+  const browser = await chromium.launch({
     headless: true,
-    timeout: 30000
+    timeout: 30000,
   });
   const context = await browser.newContext();
   const page = await context.newPage();
   const closureDates: LibraryClosureDate[] = [];
 
   try {
-    await page.goto(url, {
-      waitUntil: "networkidle",
-      timeout: 30000,
-    });
-
-    await page.waitForTimeout(3000);
-
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // 新宿区のカレンダーは現在月のみ表示されるようなので、現在月と翌月を想定
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth() + 1;
-    const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
-    const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+    const next = nextYearMonth(currentYear, currentMonth);
 
-    // 休館日のセルを取得（classにcloseを含む）
-    const closeCells = await page.locator("td.p-open-schedule__calendar-item--close, td[class*='close']").all();
-    
-    for (const cell of closeCells) {
-      const text = (await cell.textContent()) || "";
-      
-      // "3日月曜日 休館 休館" のような形式から日を抽出
-      const dayMatch = text.match(/(\d{1,2})日/);
-      if (!dayMatch) continue;
+    // 新宿区カレンダーは1ヶ月分のみ表示。?ym=YYYY/MM で当月・翌月を取得する
+    const monthUrls = [
+      `${url}?ym=${ymQuery(currentYear, currentMonth)}`,
+      `${url}?ym=${ymQuery(next.year, next.month)}`,
+    ];
 
-      const day = parseInt(dayMatch[1]);
-      
-      // 現在月で試す
-      let dateStr = `${currentYear}-${String(currentMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-      let checkDate = new Date(dateStr);
-      
-      // 日付が現在月と合わない場合は翌月を試す
-      if (checkDate.getMonth() !== currentMonth - 1) {
-        dateStr = `${nextYear}-${String(nextMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-        checkDate = new Date(dateStr);
-      }
-
-      if (checkDate >= today) {
-        closureDates.push({
-          library: "shinjuku",
-          libraryName,
-          date: dateStr,
-          reason: "休館日",
-        });
-      }
+    for (const monthUrl of monthUrls) {
+      const monthDates = await scrapeShinjukuMonth(page, monthUrl, libraryName, today);
+      closureDates.push(...monthDates);
     }
   } catch (error) {
     console.error(`Error fetching Shinjuku calendar for ${libraryName}:`, error);
@@ -184,7 +214,10 @@ async function fetchShinjukuCalendar(
     await browser.close();
   }
 
-  return closureDates.sort((a, b) => a.date.localeCompare(b.date));
+  const unique = Array.from(
+    new Map(closureDates.map((d) => [d.date, d])).values()
+  );
+  return unique.sort((a, b) => a.date.localeCompare(b.date));
 }
 
 async function fetchNakanoCalendar(
