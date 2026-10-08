@@ -1,7 +1,10 @@
 import { chromium, type Page } from "playwright";
 import type { LibraryClosureDate } from "../types.js";
 
-const LIBRARY_CALENDAR_URLS: Record<string, { pid?: string; url?: string; name: string }> = {
+const LIBRARY_CALENDAR_URLS: Record<
+  string,
+  { pid?: string; url?: string; lcskbn?: string; name: string }
+> = {
   // 豊島区
   "千早臨時窓口": {
     pid: "104",
@@ -32,13 +35,16 @@ const LIBRARY_CALENDAR_URLS: Record<string, { pid?: string; url?: string; name: 
     name: "戸山図書館",
   },
 
-  // 中野区
+  // 中野区（library.do は GET の lib= を無視し、POST の lcskbn で館を選ぶ）
+  // 08 は上高田。中野東は 09、中央は 01
   中野東: {
-    url: "https://www.kn.licsre-saas.jp/tokyo-nakano/webopac/library.do?lib=08",
+    url: "https://www.kn.licsre-saas.jp/tokyo-nakano/webopac/library.do",
+    lcskbn: "09",
     name: "中野東図書館",
   },
   中央中野: {
-    url: "https://www.kn.licsre-saas.jp/tokyo-nakano/webopac/library.do?lib=01",
+    url: "https://www.kn.licsre-saas.jp/tokyo-nakano/webopac/library.do",
+    lcskbn: "01",
     name: "中央図書館",
   },
 };
@@ -220,69 +226,94 @@ async function fetchShinjukuCalendar(
   return unique.sort((a, b) => a.date.localeCompare(b.date));
 }
 
-async function fetchNakanoCalendar(
-  url: string,
-  libraryName: string
-): Promise<LibraryClosureDate[]> {
-  const browser = await chromium.launch({ 
-    headless: true,
-    timeout: 30000
-  });
-  const context = await browser.newContext();
-  const page = await context.newPage();
+/** 中野区カレンダーHTMLから、月ごとの「休」セルだけを休館日にする */
+export function parseNakanoClosureHtml(
+  html: string,
+  libraryName: string,
+  today: Date
+): LibraryClosureDate[] {
   const closureDates: LibraryClosureDate[] = [];
+  const boxes = html.split("calTblBox").slice(1);
 
-  try {
-    await page.goto(url, {
-      waitUntil: "load",
-      timeout: 30000,
-    });
+  for (const box of boxes) {
+    const title = box.match(/(\d{4})年(\d{1,2})月/);
+    if (!title) continue;
 
-    await page.waitForTimeout(2000);
+    const year = parseInt(title[1], 10);
+    const month = parseInt(title[2], 10);
+    const cells = box.matchAll(/<td\b[\s\S]*?<\/td>/g);
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    for (const cell of cells) {
+      if (!cell[0].includes("休")) continue;
 
-    const calendarContent = await page.content();
-    
-    const yearMonthRegex = /(\d{4})年(\d{1,2})月/g;
-    let match;
-    const months: Array<{ year: number; month: number }> = [];
-    
-    while ((match = yearMonthRegex.exec(calendarContent)) !== null) {
-      const year = parseInt(match[1]);
-      const month = parseInt(match[2]);
-      if (!months.some(m => m.year === year && m.month === month)) {
-        months.push({ year, month });
-      }
+      const text = cell[0].replace(/<[^>]+>/g, " ");
+      const dayMatch = text.match(/(\d{1,2})/);
+      if (!dayMatch) continue;
+
+      const day = parseInt(dayMatch[1], 10);
+      const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+      const checkDate = new Date(`${dateStr}T00:00:00`);
+
+      if (checkDate.getFullYear() !== year || checkDate.getMonth() !== month - 1) continue;
+      if (checkDate < today) continue;
+
+      closureDates.push({
+        library: "nakano",
+        libraryName,
+        date: dateStr,
+        reason: "休館日",
+      });
     }
-
-    const dayRegex = /(\d{1,2})[^>]*休/g;
-    const allMatches = calendarContent.matchAll(dayRegex);
-    const days = Array.from(new Set(Array.from(allMatches, m => parseInt(m[1]))));
-
-    for (const { year, month } of months) {
-      for (const day of days) {
-        const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-        const checkDate = new Date(dateStr);
-        
-        if (checkDate >= today && checkDate.getMonth() === month - 1) {
-          closureDates.push({
-            library: "nakano",
-            libraryName,
-            date: dateStr,
-            reason: "休館日",
-          });
-        }
-      }
-    }
-  } catch (error) {
-    console.error(`Error fetching Nakano calendar for ${libraryName}:`, error);
-  } finally {
-    await browser.close();
   }
 
   return closureDates.sort((a, b) => a.date.localeCompare(b.date));
+}
+
+async function fetchNakanoCalendar(
+  url: string,
+  lcskbn: string,
+  libraryName: string
+): Promise<LibraryClosureDate[]> {
+  const browser = await chromium.launch({
+    headless: true,
+    timeout: 30000,
+  });
+  const context = await browser.newContext();
+
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const response = await context.request.post(url, {
+      form: {
+        year: String(today.getFullYear()),
+        month: String(today.getMonth() + 1),
+        lcskbn,
+      },
+      timeout: 30000,
+    });
+
+    if (!response.ok()) {
+      console.warn(`Nakano calendar HTTP ${response.status()} for ${libraryName}`);
+      return [];
+    }
+
+    const html = await response.text();
+    const current = html.match(/class="current"[\s\S]*?action_select\('(\d+)'/);
+    if (!current || current[1] !== lcskbn) {
+      console.warn(
+        `Nakano calendar did not select ${libraryName} (lcskbn=${lcskbn}, got ${current?.[1] ?? "none"})`
+      );
+      return [];
+    }
+
+    return parseNakanoClosureHtml(html, libraryName, today);
+  } catch (error) {
+    console.error(`Error fetching Nakano calendar for ${libraryName}:`, error);
+    return [];
+  } finally {
+    await browser.close();
+  }
 }
 
 export async function fetchAllClosureDates(
@@ -304,8 +335,8 @@ export async function fetchAllClosureDates(
         dates = await fetchToshimaCalendar(config.pid, config.name);
       } else if (lib.library === "shinjuku" && config.url) {
         dates = await fetchShinjukuCalendar(config.url, config.name);
-      } else if (lib.library === "nakano" && config.url) {
-        dates = await fetchNakanoCalendar(config.url, config.name);
+      } else if (lib.library === "nakano" && config.url && config.lcskbn) {
+        dates = await fetchNakanoCalendar(config.url, config.lcskbn, config.name);
       }
 
       allClosureDates.push(...dates);
