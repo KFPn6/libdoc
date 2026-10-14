@@ -127,12 +127,24 @@ const INDEX_HTML = `<!DOCTYPE html>
         grid-template-columns: 1fr;
       }
     }
-    .closure-item {
+    a.closure-item {
+      display: block;
+      color: inherit;
+      text-decoration: none;
       text-align: center;
       padding: 8px;
       border: 1px solid var(--border);
       border-radius: 8px;
       background: var(--bg);
+      cursor: pointer;
+    }
+    a.closure-item:hover,
+    a.closure-item:focus-visible {
+      border-color: var(--accent);
+    }
+    a.closure-item:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
     .closure-item-name {
       font-size: 0.85rem;
@@ -428,34 +440,65 @@ const INDEX_HTML = `<!DOCTYPE html>
       return html;
     }
 
+    function openLibraryWindow(event) {
+      const link = event.currentTarget;
+      const width = Math.min(1100, screen.availWidth);
+      const height = Math.min(800, screen.availHeight);
+      const left = Math.max(0, Math.round((screen.availWidth - width) / 2));
+      const top = Math.max(0, Math.round((screen.availHeight - height) / 2));
+      const features =
+        "width=" + width +
+        ",height=" + height +
+        ",left=" + left +
+        ",top=" + top;
+      const opened = window.open(link.href, link.dataset.window || "_blank", features);
+      if (!opened) return;
+      opened.opener = null;
+      event.preventDefault();
+    }
+
     function renderClosureDatesSection(closureDates, items) {
       const targetLibraries = [
-        { name: "千早図書館臨時窓口", shortName: "千早臨時", library: "toshima" },
-        { name: "西落合図書館", shortName: "西落合", library: "shinjuku" },
-        { name: "中野東図書館", shortName: "中野東", library: "nakano" }
+        {
+          name: "千早図書館臨時窓口",
+          shortName: "千早臨時",
+          library: "toshima",
+          url: "https://www.library.toshima.tokyo.jp/",
+          windowName: "lib-toshima",
+        },
+        {
+          name: "西落合図書館",
+          shortName: "西落合",
+          library: "shinjuku",
+          url: "https://www.library.shinjuku.tokyo.jp/",
+          windowName: "lib-shinjuku",
+        },
+        {
+          name: "中野東図書館",
+          shortName: "中野東",
+          library: "nakano",
+          url: "https://library.city.tokyo-nakano.lg.jp/",
+          windowName: "lib-nakano",
+        },
       ];
       
       const closureItems = targetLibraries.map(lib => {
         const nextClosure = getNextClosureDate(closureDates, lib.name);
         const countsHtml = renderClosureCounts(items || [], lib.library);
-        if (nextClosure) {
-          const todayClass = daysUntil(nextClosure.date) === 0 ? " today" : "";
-          return (
-            '<div class="closure-item' + todayClass + '">' +
-            '<div class="closure-item-name">' + escapeHtml(lib.shortName) + '</div>' +
-            '<div class="closure-item-date">' + formatClosureDate(nextClosure.date) + '</div>' +
-            countsHtml +
-            '</div>'
-          );
-        } else {
-          return (
-            '<div class="closure-item">' +
-            '<div class="closure-item-name">' + escapeHtml(lib.shortName) + '</div>' +
-            '<div class="closure-item-date">-</div>' +
-            countsHtml +
-            '</div>'
-          );
-        }
+        const todayClass = nextClosure && daysUntil(nextClosure.date) === 0 ? " today" : "";
+        const dateText = nextClosure ? formatClosureDate(nextClosure.date) : "-";
+        return (
+          '<a class="closure-item' + todayClass + '"' +
+          ' href="' + escapeHtml(lib.url) + '"' +
+          ' data-window="' + escapeHtml(lib.windowName) + '"' +
+          ' target="_blank" rel="noopener noreferrer"' +
+          ' aria-label="' + escapeHtml(lib.shortName) + 'の図書館トップページを別ウィンドウで開く"' +
+          ' onclick="openLibraryWindow(event)">' +
+          '<div class="closure-item-name">' + escapeHtml(lib.shortName) + '</div>' +
+          '<div class="closure-item-date">' + dateText + '</div>' +
+          countsHtml +
+          '</a>'
+        );
       }).join("");
       
       return (
