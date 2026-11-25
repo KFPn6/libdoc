@@ -9,15 +9,9 @@ on:
       - main
   schedule:
     # 公開リポジトリでは GitHub Actions の schedule が数時間遅れるため、
-    # cron は目標時刻より早めに設定し、実行がおおよそ JST 6/12/15/18 時になるようにする。
-    # 目標 ~6時 JST（遅れ約2時間想定）→ JST 4時 = UTC 19:00
+    # cron は目標より早めに設定する（2026-11 実測: 中央値おおよそ 4〜4.5 時間遅れ）。
+    # 目標 ~8時 JST（遅れ約4時間想定）→ JST 4時 = UTC 19:00
     - cron: "0 19 * * *"
-    # 目標 ~12時 JST（遅れ約2〜3時間想定）→ JST 9時 = UTC 00:00
-    - cron: "0 0 * * *"
-    # 目標 ~15時 JST → JST 11時 = UTC 02:00
-    - cron: "0 2 * * *"
-    # 目標 ~18時 JST → JST 13時 = UTC 04:00
-    - cron: "0 4 * * *"
 
 permissions:
   contents: read
