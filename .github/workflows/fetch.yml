@@ -25,9 +25,9 @@ concurrency:
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    # LIBRARY_ACCOUNTS が environment secret でも読めるように残す。
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -46,5 +46,15 @@ jobs:
         with:
           path: docs/
 
+  # 同じジョブでアップロード直後に deploy すると、artifact 一覧がまだ空で
+  # 「github-pages が無い」と失敗する（actions/deploy-pages#451）。
+  # 別ジョブにして、アップロード完了後に一覧を取る。
+  deploy:
+    needs: fetch
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v4
